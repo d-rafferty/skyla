@@ -334,6 +334,10 @@ textarea {
   padding: 4.5rem 0 3rem;
 }
 
+body[data-page="home"] .hero {
+  padding-top: 2.75rem;
+}
+
 .silly-skyline {
   display: none;
 }
@@ -477,6 +481,18 @@ textarea {
   padding: 1.35rem;
 }
 
+.handpoke-info-card h2 {
+  margin: 0 0 0.85rem;
+}
+
+.handpoke-info-list {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.6rem;
+  color: var(--muted);
+}
+
 .accent-section {
   background:
     linear-gradient(180deg, rgba(21, 21, 21, 0.98), rgba(37, 29, 26, 0.98)),
@@ -581,12 +597,12 @@ textarea {
 }
 
 .owl-stack {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
+  position: absolute;
+  top: 8.5rem;
+  right: 1.25rem;
   width: 8.5rem;
   height: 8.5rem;
-  z-index: 32;
+  z-index: 5;
 }
 
 .owl-secret-button,
@@ -635,7 +651,7 @@ textarea {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Cg%3E%3Cpath d='M56 35l16 17H43z' fill='%23a57a46'/%3E%3Cpath d='M124 35l13 17h-29z' fill='%23a57a46'/%3E%3Cellipse cx='90' cy='100' rx='52' ry='58' fill='%2361492f'/%3E%3Cellipse cx='90' cy='121' rx='30' ry='36' fill='%23755a3e'/%3E%3Ccircle cx='67' cy='87' r='23' fill='%23f2ecdc'/%3E%3Ccircle cx='113' cy='87' r='23' fill='%23f2ecdc'/%3E%3Ccircle cx='67' cy='88' r='12' fill='%23160f12'/%3E%3Ccircle cx='113' cy='88' r='12' fill='%23160f12'/%3E%3Ccircle cx='62' cy='83' r='4' fill='%23ffffff'/%3E%3Ccircle cx='108' cy='83' r='4' fill='%23ffffff'/%3E%3Cpath d='M90 95l12 18H78z' fill='%23d5bb62'/%3E%3Cpath d='M70 130c8 7 32 7 40 0' stroke='%23160f12' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M56 142c12 10 56 10 68 0' stroke='%239d7b56' stroke-width='6' stroke-linecap='round' fill='none' opacity='.6'/%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("sprites/owl.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -689,8 +705,52 @@ body[data-page="gallery"] .page-hero {
   padding-bottom: 1.5rem;
 }
 
+body[data-page="gallery"] main {
+  position: relative;
+  overflow: hidden;
+}
+
+body[data-page="gallery"] .page-hero,
+body[data-page="gallery"] .section,
+body[data-page="gallery"] .site-footer {
+  position: relative;
+  z-index: 2;
+}
+
 body[data-page="gallery"] .section {
   padding-top: 0.5rem;
+}
+
+.gallery-planet-orbit {
+  position: absolute;
+  top: 7rem;
+  left: 50%;
+  width: 140vw;
+  max-width: 104rem;
+  height: 94rem;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 0;
+  display: none;
+  animation: gallery-planet-orbit-spin 39s linear infinite;
+}
+
+.gallery-planet {
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 6rem;
+  height: 6rem;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 14px 20px rgba(31, 26, 23, 0.18));
+}
+
+.gallery-planet img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  animation: gallery-planet-counter-spin 39s linear infinite;
 }
 
 .gallery-toolbar {
@@ -707,7 +767,6 @@ body[data-page="gallery"] .section {
   z-index: 37;
   display: none;
   padding: 0;
-  animation: gallery-photo-drift 7.8s ease-in-out infinite;
 }
 
 .nuke-button {
@@ -719,8 +778,6 @@ body[data-page="gallery"] .section {
   padding: 0;
   border: 0;
   background: transparent;
-  box-shadow: 0 16px 26px rgba(31, 26, 23, 0.24);
-  transition: transform 0.2s ease, filter 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
 }
 
 .nuke-button:hover,
@@ -934,37 +991,37 @@ body[data-page="gallery"] .section {
 .art-1 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.3), rgba(165, 62, 43, 0.15)),
-    url("https://images.unsplash.com/photo-1542727365-19732a80dcfd?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/124A79D3-E221-4ED4-89FC-F30A6EF19AE9.jpg");
 }
 
 .art-2 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(215, 177, 127, 0.18)),
-    url("https://images.unsplash.com/photo-1590246815117-4f24784ff734?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/IMG_4188.jpg");
 }
 
 .art-3 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(165, 62, 43, 0.18)),
-    url("https://images.unsplash.com/photo-1511406361295-0a1ff814c0ce?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/IMG_5746.jpg");
 }
 
 .art-4 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(215, 177, 127, 0.12)),
-    url("https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/IMG_5750.jpg");
 }
 
 .art-5 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(165, 62, 43, 0.12)),
-    url("https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/IMG_5751.jpg");
 }
 
 .art-6 {
   background-image:
     linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
-    url("https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=900&q=80");
+    url("tattoos/IMG_6451.jpg");
 }
 
 .gallery-card p,
@@ -1316,6 +1373,42 @@ body[data-page="home"].silly-mode .silly-skyline {
   z-index: 1;
 }
 
+body[data-page="home"].silly-mode .fox-walker {
+  position: absolute;
+  display: block;
+  left: -4.5rem;
+  top: 31rem;
+  width: 3.2rem;
+  height: 3.2rem;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.32));
+  animation: fox-walk-path 27s linear infinite;
+}
+
+body[data-page="home"].silly-mode .fox-walker::before,
+body[data-page="home"].silly-mode .fox-walker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("sprites/Fox_walk.png");
+  background-repeat: no-repeat;
+  background-size: 600% 400%;
+  image-rendering: pixelated;
+}
+
+body[data-page="home"].silly-mode .fox-walker::before {
+  background-position: 0 100%;
+  animation:
+    fox-walk-frames-right 1.35s steps(6) infinite,
+    fox-face-right 27s linear infinite;
+}
+
+body[data-page="home"].silly-mode .fox-walker::after {
+  background-position: 0 66.666%;
+  animation:
+    fox-walk-frames-left 1.35s steps(6) infinite,
+    fox-face-left 27s linear infinite;
+}
+
 body[data-page="home"].silly-mode .owl-stack {
   display: block;
 }
@@ -1323,6 +1416,10 @@ body[data-page="home"].silly-mode .owl-stack {
 body[data-page="home"].silly-mode main {
   position: relative;
   overflow: hidden;
+}
+
+body[data-page="home"] main {
+  position: relative;
 }
 
 body[data-page="home"].silly-mode .hero,
@@ -1438,6 +1535,14 @@ body[data-page="gallery"].silly-mode .site-footer {
 
 body[data-page="gallery"].silly-mode .page-hero {
   padding-top: 5.1rem;
+}
+
+body[data-page="gallery"].silly-mode .gallery-planet-orbit {
+  display: block;
+}
+
+body[data-page="gallery"].silly-mode .gallery-planet {
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.3));
 }
 
 body[data-page="gallery"].silly-mode .eyebrow,
@@ -1674,41 +1779,24 @@ body[data-page="contact"].silly-mode .form-status {
 }
 
 .gallery-silly-photo {
-  width: 4.4rem;
-  height: 4.4rem;
-  border-radius: 18px;
+  width: 0rem;
+  height: 0rem;
+  background: transparent; 
   background-image:
     linear-gradient(160deg, rgba(17, 14, 28, 0.18), rgba(255, 255, 255, 0.04)),
     var(--gallery-photo-image);
   background-size: cover;
   background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.16);
   box-shadow: 0 14px 22px rgba(0, 0, 0, 0.24);
   opacity: 0.92;
-  animation: gallery-photo-drift 8.5s ease-in-out infinite;
 }
 
-.gallery-silly-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0.38rem;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-}
 
-.gallery-silly-photo.is-behind {
-  filter: saturate(0.95) brightness(0.88);
-  opacity: 0.42;
-}
-
-.gallery-silly-photo.is-front {
-  backdrop-filter: blur(2px);
-}
 
 .gallery-silly-photo-1 {
   top: 11rem;
   left: 3.5%;
-  animation-delay: -1.2s;
+  animation-delay: 999s;
 }
 
 .gallery-silly-photo-2 {
@@ -1763,7 +1851,7 @@ body[data-page="contact"].silly-mode .form-status {
 
 .gallery-silly-photo-8 {
   top: 95rem;
-  left: 18%;
+  left: 10%;
   width: 4.4rem;
   height: 4.4rem;
   animation-duration: 7.6s;
@@ -1908,6 +1996,18 @@ body[data-page="contact"].silly-mode .form-status {
   opacity: 0.78;
 }
 
+.sticker-ufo-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.fox-walker {
+  display: none;
+}
+
 .sticker-flower {
   left: 4%;
   top: 2rem;
@@ -1916,6 +2016,8 @@ body[data-page="contact"].silly-mode .form-status {
 .sticker-ufo {
   right: 9%;
   top: 1rem;
+  width: 4.8rem;
+  height: 4.8rem;
   animation-duration: 5.6s;
   transition:
     top 2.4s ease-in-out,
@@ -2096,6 +2198,92 @@ body[data-page="contact"].silly-mode .form-status {
   }
 }
 
+@keyframes fox-walk-frames-right {
+  from {
+    background-position: 0 100%;
+  }
+
+  to {
+    background-position: 120% 100%;
+  }
+}
+
+@keyframes fox-walk-frames-left {
+  from {
+    background-position: 0 66.666%;
+  }
+
+  to {
+    background-position: 120% 66.666%;
+  }
+}
+
+@keyframes fox-face-right {
+  0%,
+  49.999% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fox-face-left {
+  0%,
+  49.999% {
+    opacity: 0;
+  }
+
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fox-walk-path {
+  0% {
+    transform: translateX(0);
+  }
+
+  49% {
+    transform: translateX(calc(100vw + 5rem));
+  }
+
+  50% {
+    transform: translateX(calc(100vw + 5rem));
+  }
+
+  99% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes gallery-planet-orbit-spin {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@keyframes gallery-planet-counter-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 [hidden] {
   display: none !important;
 }
@@ -2132,6 +2320,17 @@ body[data-page="contact"].silly-mode .form-status {
 }
 
 @media (max-width: 699px) {
+  .gallery-planet-orbit {
+    width: 155vw;
+    height: 76rem;
+    top: 8rem;
+  }
+
+  .gallery-planet {
+    width: 4.5rem;
+    height: 4.5rem;
+  }
+
   .gallery-silly-photo-2,
   .gallery-silly-photo-5,
   .gallery-silly-photo-7,
@@ -2188,7 +2387,7 @@ body[data-page="contact"].silly-mode .form-status {
   }
 
   .owl-stack {
-    top: 1rem;
+    top: 7.25rem;
     right: 0.6rem;
     width: 6.75rem;
     height: 6.75rem;
