@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | tmp</title>
+  <meta
+    name="description"
+    content="Contact tmp for handpoke booking requests, consultations, shop hours, and location details."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="contact">
+  <header class="site-header">
+    <div class="container topbar">
+      <a class="brand" href="index.html" aria-label="tmp home">
+        <span class="brand-mark">IFKYK</span>
+        <span class="brand-text">
+          <strong>definitely not tattoos</strong>
+          <span>definitely not handpoke tattoos</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a class="button button-small" href="contact.html#booking">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container reveal">
+        <p class="eyebrow">Booking & Questions</p>
+        <h1>Contact Us.</h1>
+        <p class="lead">
+          Reach out for handpoke appointments, flash availability, custom ideas, or general questions.
+        </p>
+      </div>
+    </section>
+
+          <div class="contact-form-column reveal">
+            <div class="form-shell" id="booking">
+              <p class="meta-label">Tell us about your idea.</p>
+              <form class="form-grid" data-contact-form>
+                <div class="form-row">
+                  <label for="name">Name</label>
+                  <input id="name" name="name" type="text" placeholder="Your full name" required>
+                </div>
+
+                <div class="form-row">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="form-row">
+                  <label for="placement">Placement</label>
+                  <input id="placement" name="placement" type="text" placeholder="Forearm, shoulder, calf...">
+                </div>
+
+                <div class="form-row">
+                  <label for="style">Preferred Style</label>
+                  <select id="style" name="style">
+                    <option value="">Select a style</option>
+                    <option value="botanical">Botanical</option>
+                    <option value="fineline">Fine Line</option>
+                    <option value="symbolic">Symbolic</option>
+                    <option value="lettering">Lettering</option>
+                    <option value="custom">Not sure yet</option>
+                  </select>
+                </div>
+
+                <div class="form-row">
+                  <label for="message">Project Details</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    placeholder="Share your concept, approximate size, placement, and any references you want included."
+                    required
+                  ></textarea>
+                </div>
+
+                <p class="field-note">Typical response time: within 1 to 2 business days.</p>
+                <button class="button" type="submit">Send Request</button>
+                <p class="form-status" aria-live="polite"></p>
+              </form>
+            </div>
+
+            <div class="info-card booking-notes-card">
+              <p class="meta-label">Booking Notes</p>
+              <ul class="faq-list">
+                <li>Handpoke sessions are slower paced and best suited for thoughtful, detail-forward work.</li>
+                <li>Please include references, placement, approximate size, and whether you want custom or flash.</li>
+                <li>A deposit is required to confirm all handpoke appointments.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Definitely Not Skyla</strong>
+        <p>Handpoke tattoo studio in Chillicothe, Ohio</p>
+      </div>
+      <div>
+        <p>63 E Water Street, Chillicothe, OH 45601</p>
+        <p>Sessions by appointment only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

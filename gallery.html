@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gallery | tmp Handpoke</title>
+  <meta
+    name="description"
+    content="Browse handpoke tattoo work from tmp, including fine line, botanical, symbol, and custom minimalist pieces."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="gallery">
+  <header class="site-header">
+    <div class="container topbar">
+      <a class="brand" href="index.html" aria-label="tmp home">
+        <span class="brand-mark">IFKYK</span>
+        <span class="brand-text">
+          <strong>definitely not tattoos</strong>
+          <span>definitely not handpoke tattoos</span>
+        </span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="sr-only">Toggle navigation</span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="index.html">Home</a>
+        <a href="gallery.html">Gallery</a>
+        <a class="button button-small" href="contact.html#booking">Book Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container reveal">
+        <p class="eyebrow">Selected Handpoke Work</p>
+        <h1>Gallery</h1>
+        <p class="lead">
+          A small selection of handpoked pieces, from delicate linework to symbolic custom designs.
+          Use these to get a feel for pacing, detail level, and overall direction.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="gallery-toolbar reveal" aria-label="Gallery filters">
+          <button class="filter-chip active" type="button" data-filter="all">All Work</button>
+          <button class="filter-chip" type="button" data-filter="botanical">Botanical</button>
+          <button class="filter-chip" type="button" data-filter="fineline">Fine Line</button>
+          <button class="filter-chip" type="button" data-filter="symbolic">Symbolic</button>
+        </div>
+
+        <div class="gallery-grid">
+          <article class="gallery-card reveal" data-category="botanical">
+            <div class="gallery-art art-1" role="img" aria-label="Handpoke botanical arm tattoo"></div>
+            <p class="artist-tag">Botanical</p>
+            <h3>Wild Stem Composition</h3>
+            <p>Soft handpoked linework arranged to move naturally with the shape of the arm.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="fineline">
+            <div class="gallery-art art-2" role="img" aria-label="Fine line handpoke wrist tattoo"></div>
+            <p class="artist-tag">Fine Line</p>
+            <h3>Minimal Script + Ornament</h3>
+            <p>Delicate handpoke lettering paired with a subtle ornamental detail for understated placement.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="symbolic">
+            <div class="gallery-art art-3" role="img" aria-label="Handpoke symbolic rose tattoo"></div>
+            <p class="artist-tag">Symbolic</p>
+            <h3>Rose Motif Study</h3>
+            <p>A symbolic floral piece built from patient dotwork and restrained, intentional lines.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="botanical">
+            <div class="gallery-art art-4" role="img" aria-label="Handpoke botanical back tattoo"></div>
+            <p class="artist-tag">Botanical</p>
+            <h3>Leaf and Vine Placement</h3>
+            <p>Lightweight handpoke design planned for open skin, balance, and graceful body flow.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="fineline">
+            <div class="gallery-art art-5" role="img" aria-label="Fine line handpoke portrait tattoo"></div>
+            <p class="artist-tag">Fine Line</p>
+            <h3>Quiet Portrait Detail</h3>
+            <p>Soft detail and measured line density suited to intimate, small-scale handpoke portraits.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="symbolic">
+            <div class="gallery-art art-6" role="img" aria-label="Handpoke symbolic dagger tattoo"></div>
+            <p class="artist-tag">Symbolic</p>
+            <h3>Dagger and Bloom</h3>
+            <p>Symbol-led composition translated into handpoke marks for a softer, more textured finish.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <strong>Definitely Not Skyla</strong>
+        <p>Handpoke tattoo studio in Chillicothe, Ohio</p>
+      </div>
+      <div>
+        <p>63 E Water Street, Chillicothe, OH 45601</p>
+        <p>Sessions by appointment only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
