@@ -12,8 +12,53 @@ const frequencyReadout = document.querySelector("[data-frequency-readout]");
 const radioStatus = document.querySelector("[data-radio-status]");
 const sillyModeKey = "site-silly-mode";
 
+const getIncomingSillyMode = () => {
+  const params = new URLSearchParams(window.location.search);
+  const modeParam = params.get("mode");
+
+  if (modeParam === "dark") {
+    window.localStorage.setItem(sillyModeKey, "true");
+    return true;
+  }
+
+  if (modeParam === "light") {
+    window.localStorage.setItem(sillyModeKey, "false");
+    return false;
+  }
+
+  return window.localStorage.getItem(sillyModeKey) === "true";
+};
+
+const savedSillyMode = getIncomingSillyMode();
+
+const updateInternalLinksWithMode = (enabled) => {
+  const currentMode = enabled ? "dark" : "light";
+  const pageLinks = document.querySelectorAll('a[href]');
+
+  pageLinks.forEach((link) => {
+    const rawHref = link.getAttribute("href");
+    if (!rawHref || rawHref.startsWith("#") || rawHref.startsWith("mailto:") || rawHref.startsWith("tel:")) {
+      return;
+    }
+
+    try {
+      const url = new URL(rawHref, window.location.href);
+      if (url.origin !== window.location.origin) {
+        return;
+      }
+
+      url.searchParams.set("mode", currentMode);
+      const nextHref = `${url.pathname}${url.search}${url.hash}`;
+      link.setAttribute("href", nextHref);
+    } catch {
+      // Ignore invalid URLs and leave their hrefs untouched.
+    }
+  });
+};
+
 const updateSillyModeUi = (enabled) => {
   document.body.classList.toggle("silly-mode", enabled);
+  updateInternalLinksWithMode(enabled);
 
   if (sillyToggle) {
     sillyToggle.classList.toggle("is-active", enabled);
@@ -21,6 +66,26 @@ const updateSillyModeUi = (enabled) => {
     sillyToggle.setAttribute("aria-label", enabled ? "Turn silly mode off" : "Turn silly mode on");
   }
 };
+
+if (currentPage !== "home") {
+  updateSillyModeUi(savedSillyMode);
+}
+
+if (currentPage !== "home" && sillyToggle) {
+  sillyToggle.addEventListener("click", () => {
+    const nextState = !document.body.classList.contains("silly-mode");
+    updateSillyModeUi(nextState);
+    window.localStorage.setItem(sillyModeKey, String(nextState));
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (event.key !== sillyModeKey) {
+      return;
+    }
+
+    updateSillyModeUi(event.newValue === "true");
+  });
+}
 
 if (navToggle && siteNav) {
   navToggle.addEventListener("click", () => {
@@ -37,7 +102,8 @@ if (navToggle && siteNav) {
 }
 
 navLinks.forEach((link) => {
-  const linkPage = link.getAttribute("href")?.split("#")[0];
+  const linkHref = link.getAttribute("href");
+  const linkPage = linkHref ? new URL(linkHref, window.location.href).pathname.split("/").pop() : "";
 
   const isHomeLink = currentPage === "home" && linkPage === "index.html";
   const isMatchingSubpage = linkPage && currentPage && linkPage.includes(currentPage);
@@ -99,7 +165,6 @@ if (revealItems.length) {
 
 if (currentPage === "home") {
   const unlockSequence = "cvhwpmbgvm";
-  const savedMode = window.localStorage.getItem(sillyModeKey) === "true";
   let sillyUfoTimeoutId;
   let typedBuffer = "";
   let unlockTriggered = false;
@@ -158,7 +223,7 @@ if (currentPage === "home") {
     }
   };
 
-  setSillyMode(savedMode);
+  setSillyMode(savedSillyMode);
 
   if (sillyToggle) {
     sillyToggle.addEventListener("click", () => {
@@ -192,7 +257,6 @@ if (currentPage === "home") {
 }
 
 if (currentPage === "gallery") {
-  const savedMode = window.localStorage.getItem(sillyModeKey) === "true";
   const nukeButton = document.querySelector("[data-nuke-button]");
   const nukeTerminal = document.querySelector("[data-nuke-terminal]");
   const nukeTerminalScreen = document.querySelector("[data-nuke-terminal-screen]");
@@ -212,28 +276,6 @@ if (currentPage === "gallery") {
 
   nukeAudio.preload = "auto";
   deathAudio.preload = "auto";
-
-  const setSillyMode = (enabled) => {
-    updateSillyModeUi(enabled);
-    window.localStorage.setItem(sillyModeKey, String(enabled));
-  };
-
-  setSillyMode(savedMode);
-
-  if (sillyToggle) {
-    sillyToggle.addEventListener("click", () => {
-      const nextState = !document.body.classList.contains("silly-mode");
-      setSillyMode(nextState);
-    });
-  }
-
-  window.addEventListener("storage", (event) => {
-    if (event.key !== sillyModeKey) {
-      return;
-    }
-
-    setSillyMode(event.newValue === "true");
-  });
 
   const getLaunchableCards = () =>
     Array.from(document.querySelectorAll(".gallery-card"))
