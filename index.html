@@ -8,6 +8,10 @@
     name="description"
     content="tmp is a handpoke tattoo studio offering intentional custom work and a calm, private experience in Brooklyn, New York."
   >
+  <link
+    rel="icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231f1a17'/%3E%3Ctext x='32' y='39' text-anchor='middle' font-family='Arial, sans-serif' font-size='24' font-weight='700' fill='%23fff8f3'%3Ednt%3C/text%3E%3C/svg%3E"
+  >
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -65,10 +69,13 @@
 
     <div class="silly-skyline" aria-hidden="true">
       <span class="sticker sticker-flower">🌼</span>
-      <span class="sticker sticker-ufo">🛸</span>
+      <span class="sticker sticker-ufo">
+        <img class="sticker-ufo-image" src="sprites/ufo.png" alt="">
+      </span>
       <span class="sticker sticker-star">★</span>
       <span class="sticker sticker-heart">♥</span>
       <span class="sticker sticker-sparkle">✦</span>
+      <span class="fox-walker" aria-hidden="true"></span>
     </div>
 
     <section class="hero">
@@ -96,10 +103,6 @@
               <div>
                 <h2>Booking</h2>
                 <p>740-835-9176<br>definitelynotskylaa@gmail.com</p>
-              </div>
-              <div>
-                <h2>Specialty</h2>
-                <p>Handpoke fine line, symbols, chaos, and intimate custom pieces.</p>
               </div>
               <div>
                 <h2>Social Media:</h2>
@@ -148,6 +151,22 @@
       </div>
     </section>
 
+    <section class="hero">
+      <div class="container reveal">
+        <div class="feature-panel">
+          <p class="panel-label">About Handpoke</p>
+          <h2>What To Know About Handpoke Tattoos</h2>
+          <ul style="font-size: 20px">
+            <li>Handpoke tattoos are created using only my hand, needle, and ink.</li>
+            <li>Each dot is carefully placed on your skin, gradually building delicate lines.</li>
+            <li>The end result is a one of a kind tattoo made just for you.</li>
+            <li>The handpoked experience has been described as less painful but sensitivity varies by person.</li>
+            <li>This style has a vintage, penicl drawn texture like illustrations from old story books.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
     <section class="section scroll-gallery-section">
       <div class="container reveal">
         <p class="eyebrow">Recent Work</p>
@@ -155,7 +174,6 @@
       </div>
       <div class="scroll-gallery" aria-label="Scrolling tattoo gallery">
         <div class="scroll-gallery-track" data-scroll-gallery></div>
-        <p class="silly-subtitle">There is an intricate puzzle deeply layered within this page. The first to find the secret phrase receives a free tattoo of up to $300.</p>
       </div>
     </section>
   </main>

@@ -174,8 +174,8 @@ if (currentPage === "home") {
       return;
     }
 
-    const top = Math.round(6 + Math.random() * 52);
-    const left = Math.round(8 + Math.random() * 78);
+    const top = Math.round(4 + Math.random() * 78);
+    const left = Math.round(2 + Math.random() * 92);
     const rotate = Math.round(-18 + Math.random() * 36);
     const scale = (0.95 + Math.random() * 0.35).toFixed(2);
 
@@ -538,7 +538,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
   let galleryRafId = 0;
   let galleryLoopWidth = 0;
 
-  const getGallerySpeed = () => 1;
+  const getGallerySpeed = () => 28;
   const getGalleryDirection = () => -1;
 
   const buildGalleryCard = ({ src, alt }, index) => {
@@ -579,7 +579,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
   };
 
   const paintGallery = () => {
-    scrollGalleryTrack.style.transform = `translateX(${galleryTranslateX}px)`;
+    scrollGalleryTrack.style.transform = `translate3d(${galleryTranslateX}px, 0, 0)`;
   };
 
   const tickGallery = (timestamp) => {
@@ -587,14 +587,12 @@ if (currentPage === "home" && scrollGalleryTrack) {
       lastTimestamp = timestamp;
     }
 
-    const deltaSeconds = (timestamp - lastTimestamp) / 50;
+    const deltaSeconds = (timestamp - lastTimestamp) / 1000;
     lastTimestamp = timestamp;
     galleryTranslateX += getGalleryDirection() * getGallerySpeed() * deltaSeconds;
 
-    if (galleryLoopWidth > 0 && galleryTranslateX <= -galleryLoopWidth) {
-      galleryTranslateX += galleryLoopWidth;
-    } else if (galleryLoopWidth > 0 && galleryTranslateX >= 0) {
-      galleryTranslateX -= galleryLoopWidth;
+    if (galleryLoopWidth > 0) {
+      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
     }
 
     paintGallery();
@@ -608,13 +606,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
   window.addEventListener("resize", () => {
     measureGalleryLoop();
     if (galleryLoopWidth > 0) {
-      while (galleryTranslateX <= -galleryLoopWidth) {
-        galleryTranslateX += galleryLoopWidth;
-      }
-
-      while (galleryTranslateX >= 0) {
-        galleryTranslateX -= galleryLoopWidth;
-      }
+      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
     }
     paintGallery();
   });
