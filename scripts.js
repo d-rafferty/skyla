@@ -80,7 +80,7 @@ if (revealItems.length) {
         }
       });
     },
-    { threshold: 0.15 }
+    { threshold: .2 }
   );
 
   revealItems.forEach((item) => observer.observe(item));
@@ -175,49 +175,97 @@ if (currentPage === "home" && sillyToggle) {
 }
 
 if (currentPage === "home" && scrollGalleryTrack) {
-  let offset = 0;
+  const homeGalleryImages = [
+    { src: "images/IMG_4884.jpeg", alt: "Handpoke tattoo gallery image 1" },
+    { src: "images/IMG_4996.jpeg", alt: "Handpoke tattoo gallery image 2" },
+    { src: "images/IMG_6979.png", alt: "Handpoke tattoo gallery image 3" },
+    { src: "images/Untitled_Artwork 1.jpeg", alt: "Handpoke tattoo gallery image 4" },
+    { src: "images/Untitled_Artwork 2.jpeg", alt: "Handpoke tattoo gallery image 5" }
+  ];
+  let galleryTranslateX = 0;
   let lastTimestamp = 0;
   let galleryRafId = 0;
-  const galleryFadeBuffer = () => (window.innerWidth >= 700 ? 64 : 44);
-  const gallerySpacer = scrollGalleryTrack.querySelector(".scroll-gallery-spacer");
+  let galleryLoopWidth = 0;
 
-  const getGallerySpeed = () =>
-    document.body.classList.contains("silly-mode") ? 32 : 20;
+  const getGallerySpeed = () => 1;
+  const getGalleryDirection = () => -1;
+
+  const buildGalleryCard = ({ src, alt }, index) => {
+    const card = document.createElement("article");
+    card.className = "scroll-gallery-card";
+    card.setAttribute("aria-hidden", index >= homeGalleryImages.length ? "true" : "false");
+
+    const image = document.createElement("div");
+    image.className = "scroll-gallery-image";
+    image.setAttribute("role", "img");
+    image.setAttribute("aria-label", alt);
+    image.style.backgroundImage = `url("${src}")`;
+
+    card.append(image);
+    return card;
+  };
+
+  const measureGalleryLoop = () => {
+    const cards = scrollGalleryTrack.querySelectorAll(".scroll-gallery-card");
+    const firstSequenceCards = Array.from(cards).slice(0, homeGalleryImages.length);
+
+    galleryLoopWidth = firstSequenceCards.reduce((width, card) => {
+      const cardWidth = card.getBoundingClientRect().width;
+      const styles = window.getComputedStyle(scrollGalleryTrack);
+      const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
+      return width + cardWidth + gap;
+    }, 0);
+
+    if (galleryLoopWidth > 0) {
+      galleryLoopWidth -= Number.parseFloat(window.getComputedStyle(scrollGalleryTrack).columnGap || window.getComputedStyle(scrollGalleryTrack).gap || "0");
+    }
+  };
+
+  const initializeGallery = () => {
+    const galleryCards = [...homeGalleryImages, ...homeGalleryImages];
+    scrollGalleryTrack.replaceChildren(...galleryCards.map(buildGalleryCard));
+    measureGalleryLoop();
+  };
+
+  const paintGallery = () => {
+    scrollGalleryTrack.style.transform = `translateX(${galleryTranslateX}px)`;
+  };
 
   const tickGallery = (timestamp) => {
     if (!lastTimestamp) {
       lastTimestamp = timestamp;
     }
 
-    const deltaSeconds = (timestamp - lastTimestamp) / 1000;
+    const deltaSeconds = (timestamp - lastTimestamp) / 50;
     lastTimestamp = timestamp;
-    offset += getGallerySpeed() * deltaSeconds;
+    galleryTranslateX += getGalleryDirection() * getGallerySpeed() * deltaSeconds;
 
-    const firstCard = scrollGalleryTrack.querySelector(".scroll-gallery-card");
-
-    if (firstCard instanceof HTMLElement) {
-      const cardStyles = window.getComputedStyle(scrollGalleryTrack);
-      const gap = Number.parseFloat(cardStyles.columnGap || cardStyles.gap || "0");
-      const firstCardWidth = firstCard.getBoundingClientRect().width + gap;
-
-      if (offset >= firstCardWidth + galleryFadeBuffer()) {
-        offset -= firstCardWidth;
-        if (gallerySpacer) {
-          scrollGalleryTrack.insertBefore(firstCard, gallerySpacer);
-        } else {
-          scrollGalleryTrack.append(firstCard);
-        }
-      }
+    if (galleryLoopWidth > 0 && galleryTranslateX <= -galleryLoopWidth) {
+      galleryTranslateX += galleryLoopWidth;
+    } else if (galleryLoopWidth > 0 && galleryTranslateX >= 0) {
+      galleryTranslateX -= galleryLoopWidth;
     }
 
-    scrollGalleryTrack.style.transform = `translateX(${-offset}px)`;
+    paintGallery();
     galleryRafId = window.requestAnimationFrame(tickGallery);
   };
 
+  initializeGallery();
+  paintGallery();
   galleryRafId = window.requestAnimationFrame(tickGallery);
 
   window.addEventListener("resize", () => {
-    scrollGalleryTrack.style.transform = `translateX(${-offset}px)`;
+    measureGalleryLoop();
+    if (galleryLoopWidth > 0) {
+      while (galleryTranslateX <= -galleryLoopWidth) {
+        galleryTranslateX += galleryLoopWidth;
+      }
+
+      while (galleryTranslateX >= 0) {
+        galleryTranslateX -= galleryLoopWidth;
+      }
+    }
+    paintGallery();
   });
 }
 
@@ -269,7 +317,7 @@ if (currentPage === "secret" && radioTuner && frequencyReadout) {
     { value: 931, file: "sounds/chatter1.mp3", label: "Faint voices in the noise." },
     { value: 986, file: "sounds/chatter2.mp3", label: "Cross-talk and distant chatter." },
     { value: 1017, file: "sounds/morse.wav", label: "A coded signal breaks through." },
-    { value: 1024, file: "sounds/chatter3.mp3", label: "A stranger voice keeps slipping in and out." }
+    { value: 1044, file: "sounds/chatter3.mp3", label: "A stranger voice keeps slipping in and out." }
   ];
 
   const audioCache = new Map();
