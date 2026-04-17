@@ -139,9 +139,31 @@ if (form && formStatus) {
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const firstName = form.querySelector("#name")?.value.trim() || "there";
-    formStatus.textContent = `Thanks, ${firstName}. Your request is ready to send to the shop team.`;
-    form.reset();
+    const name = form.querySelector("#name")?.value.trim() || "";
+    const email = form.querySelector("#email")?.value.trim() || "";
+    const phone = form.querySelector("#phone")?.value.trim() || "Not provided";
+    const placement = form.querySelector("#placement")?.value.trim() || "Not provided";
+    const style = form.querySelector("#style")?.selectedOptions?.[0]?.textContent?.trim() || "Not provided";
+    const message = form.querySelector("#message")?.value.trim() || "";
+
+    const subject = `Booking Request from ${name || "Website Visitor"}`;
+    const body = [
+      "New booking request",
+      "",
+      `Name: ${name || "Not provided"}`,
+      `Email: ${email || "Not provided"}`,
+      `Phone: ${phone}`,
+      `Placement: ${placement}`,
+      `Preferred Style: ${style || "Not provided"}`,
+      "",
+      "Project Details:",
+      message || "Not provided"
+    ].join("\n");
+
+    const mailtoUrl = `mailto:definitelynotskylaa@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    formStatus.textContent = "Opening your email app with a pre-filled booking request...";
+    window.location.href = mailtoUrl;
   });
 }
 
