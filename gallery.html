@@ -17,6 +17,20 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="gallery">
+  <button
+    class="mode-toggle silly-corner-toggle"
+    type="button"
+    aria-pressed="false"
+    aria-label="Toggle silly mode"
+    data-silly-toggle
+  >
+    <span class="switch-label">Dark Mode</span>
+    <span class="switch-plate" aria-hidden="true">
+      <span class="switch-track">
+        <span class="switch-knob"></span>
+      </span>
+    </span>
+  </button>
   <header class="site-header">
     <div class="container topbar">
       <a class="brand" href="index.html" aria-label="tmp home">
@@ -41,6 +55,56 @@
   </header>
 
   <main>
+    <div class="gallery-silly-scene" aria-hidden="true">
+      <div class="gallery-silly-layer gallery-silly-layer-back">
+        <span class="gallery-silly-orb gallery-silly-orb-1"></span>
+        <span class="gallery-silly-orb gallery-silly-orb-2"></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-1 is-behind"
+          style="--gallery-photo-image: url('images/IMG_4884.jpeg')"
+        ></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-2 is-behind"
+          style="--gallery-photo-image: url('images/IMG_4996.jpeg')"
+        ></span>
+      </div>
+      <div class="gallery-silly-layer gallery-silly-layer-front">
+        <span
+          class="gallery-silly-photo gallery-silly-photo-3 is-front"
+          style="--gallery-photo-image: url('images/IMG_6979.png')"
+        ></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-4 is-front"
+          style="--gallery-photo-image: url('images/Untitled_Artwork 1.jpeg')"
+        ></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-5 is-front"
+          style="--gallery-photo-image: url('images/Untitled_Artwork 2.jpeg')"
+        ></span>
+        <span class="gallery-silly-spark gallery-silly-spark-1"></span>
+        <span class="gallery-silly-spark gallery-silly-spark-2"></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-6 is-front"
+          style="--gallery-photo-image: url('images/IMG_4884.jpeg')"
+        ></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-7 is-behind"
+          style="--gallery-photo-image: url('images/Untitled_Artwork 2.jpeg')"
+        ></span>
+        <span
+          class="gallery-silly-photo gallery-silly-photo-8 is-front"
+          style="--gallery-photo-image: url('images/IMG_4996.jpeg')"
+        ></span>
+        <span class="gallery-silly-spark gallery-silly-spark-3"></span>
+      </div>
+    </div>
+
+    <div class="nuke-console" data-nuke-console>
+      <button class="nuke-button" type="button" data-nuke-button aria-label="Launch nuke console">
+        <img class="nuke-button-image" src="sprites/nuke.png" alt="">
+      </button>
+    </div>
+
     <section class="page-hero">
       <div class="container reveal">
         <p class="eyebrow">Selected Handpoke Work</p>
@@ -61,7 +125,7 @@
           <button class="filter-chip" type="button" data-filter="symbolic">Color</button>
         </div>
 
-        <div class="gallery-grid">
+        <div class="gallery-grid" data-gallery-grid>
           <article class="gallery-card reveal" data-category="botanical">
             <div class="gallery-art art-1" role="img" aria-label="Handpoke botanical arm tattoo"></div>
             <p class="artist-tag">Chaos</p>
@@ -107,6 +171,35 @@
       </div>
     </section>
   </main>
+
+  <div class="nuke-terminal" hidden data-nuke-terminal>
+    <div class="nuke-terminal-panel">
+      <p class="nuke-terminal-heading">Launch Console</p>
+      <pre class="nuke-terminal-screen" data-nuke-terminal-screen></pre>
+      <form class="nuke-confirm" data-nuke-form hidden>
+        <label class="nuke-confirm-label" for="nuke-code">Type code to confirm</label>
+        <div class="nuke-confirm-row">
+          <input
+            class="nuke-confirm-input"
+            id="nuke-code"
+            name="nuke_code"
+            type="text"
+            placeholder="Enter code"
+            autocomplete="off"
+            spellcheck="false"
+            data-nuke-input
+          >
+          <button class="button button-small" type="submit">Confirm</button>
+        </div>
+      </form>
+      <p class="nuke-status" aria-live="polite" data-nuke-status>
+        Lid sealed. Launch code unavailable.
+      </p>
+      <button class="nuke-terminal-close" type="button" data-nuke-close>
+        Close
+      </button>
+    </div>
+  </div>
 
   <footer class="site-footer">
     <div class="container footer-grid">
