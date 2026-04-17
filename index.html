@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>tmp | Handpoke Tattoo Studio</title>
+  <title>Definitely Not A Tattoo</title>
   <meta
     name="description"
     content="tmp is a handpoke tattoo studio offering intentional custom work and a calm, private experience in Brooklyn, New York."
@@ -11,16 +11,31 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   >
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="home">
+  <button
+    class="mode-toggle silly-corner-toggle"
+    type="button"
+    aria-pressed="false"
+    aria-label="Toggle silly mode"
+    data-silly-toggle
+  >
+    <span class="switch-label">Dark Mode</span>
+    <span class="switch-plate" aria-hidden="true">
+      <span class="switch-track">
+        <span class="switch-knob"></span>
+      </span>
+    </span>
+  </button>
+  <a class="key-unlock-button" href="truth.html" data-key-unlock>Learn The Truth</a>
   <header class="site-header">
     <div class="container topbar">
       <a class="brand" href="index.html" aria-label="tmp home">
-        <span class="brand-mark">IFKYK</span>
+        <span class="brand-mark">hm</span>
         <span class="brand-text">
           <strong>definitely not tattoos</strong>
           <span>definitely not handpoke tattoos</span>
@@ -41,6 +56,21 @@
   </header>
 
   <main>
+    <div class="owl-stack">
+      <a class="owl-secret-button" href="secret.html">who?</a>
+      <button class="owl-dragger" type="button" data-owl-dragger aria-label="Drag owl away">
+        <span class="owl-image" aria-hidden="true"></span>
+      </button>
+    </div>
+
+    <div class="silly-skyline" aria-hidden="true">
+      <span class="sticker sticker-flower">🌼</span>
+      <span class="sticker sticker-ufo">🛸</span>
+      <span class="sticker sticker-star">★</span>
+      <span class="sticker sticker-heart">♥</span>
+      <span class="sticker sticker-sparkle">✦</span>
+    </div>
+
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy reveal">
@@ -80,9 +110,10 @@
     <section class="section scroll-gallery-section">
       <div class="container reveal">
         <p class="eyebrow">Recent Work</p>
+        
       </div>
       <div class="scroll-gallery" aria-label="Scrolling tattoo gallery">
-        <div class="scroll-gallery-track">
+        <div class="scroll-gallery-track" data-scroll-gallery>
           <article class="scroll-gallery-card">
             <div class="scroll-gallery-image home-art-1" role="img" aria-label="Handpoke botanical arm tattoo"></div>
           </article>
@@ -101,25 +132,9 @@
           <article class="scroll-gallery-card">
             <div class="scroll-gallery-image home-art-6" role="img" aria-label="Handpoke symbolic dagger tattoo"></div>
           </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-1"></div>
-          </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-2"></div>
-          </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-3"></div>
-          </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-4"></div>
-          </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-5"></div>
-          </article>
-          <article class="scroll-gallery-card" aria-hidden="true">
-            <div class="scroll-gallery-image home-art-6"></div>
-          </article>
+          <span class="scroll-gallery-spacer" aria-hidden="true"></span>
         </div>
+        <p class="silly-subtitle">There is an intricate puzzle deeply layered within this page. The first to find the secret phrase receives a free tattoo of up to $300.</p>
       </div>
     </section>
   </main>
