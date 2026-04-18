@@ -53,7 +53,7 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="gallery.html">Gallery</a>
-        <a class="button button-small" href="contact.html#booking">Book Now</a>
+        <a class="button button-small" href="contact.html">Book Now</a>
       </nav>
     </div>
   </header>
@@ -65,52 +65,20 @@
       </span>
     </div>
 
-    <div class="gallery-silly-scene" aria-hidden="true">
-      <div class="gallery-silly-layer gallery-silly-layer-back">
-        <span class="gallery-silly-orb gallery-silly-orb-1"></span>
-        <span class="gallery-silly-orb gallery-silly-orb-2"></span>
-        <span
-          class="gallery-silly-photo gallery-silly-photo-1"
-          style="--gallery-photo-image: url('sprites/bat.png')"
-        ></span>
-        <span
-          class="gallery-silly-photo gallery-silly-photo-2"
-          style="--gallery-photo-image: url('sprites/face.jpg')"
-        ></span>
-      </div>
-      <div class="gallery-silly-layer gallery-silly-layer-front">
-        <span
-          class="gallery-silly-photo gallery-silly-photo-3"
-          style="--gallery-photo-image: url('sprites/painting.png')"
-        ></span>
-        <span
-          class="gallery-silly-photo gallery-silly-photo-4"
-          style="--gallery-photo-image: url('sprites/bat.png')"
-        ></span>
-        <span
-          class="gallery-silly-photo gallery-silly-photo-5"
-          style="--gallery-photo-image: url('sprites/bee.png')"
-        ></span>
-        <span
-          class="gallery-silly-photo gallery-silly-photo-8"
-          style="--gallery-photo-image: url('sprites/cat.png')"
-        ></span>
-        <span class="gallery-silly-spark gallery-silly-spark-3"></span>
-      </div>
+    <div class="img-wrapper" aria-hidden="true">
+        <img src="sprites/" alt="" class="flexible-image img-float-1">
+        <img src="sprites/butterfly.svg" alt="" class="flexible-image img-float-2">
+        <img src="sprites/" alt="" class="flexible-image img-float-3">
+        <img src="sprites/face.jpg" alt="" class="flexible-image img-float-4">
+        <img src="sprites/garden.svg" alt="" class="flexible-image img-float-6">
+        <img src="sprites/skelly.svg" alt="" class="flexible-image img-float-7">
     </div>
-
-    <div class="nuke-console" data-nuke-console>
-      <button class="nuke-button" type="button" data-nuke-button aria-label="Launch nuke console">
-        <img class="silly-image" src="sprites/nuke.png" alt="">
-      </button>
-    </div>
-
     <section class="page-hero">
       <div class="container reveal">
         <p class="eyebrow">Selected Handpoke Work</p>
         <h1>Gallery</h1>
         <p class="lead">
-          A small selection of handpoked pieces, from delicate linework to symbolic custom designs.
+          A small selection of my handpoked pieces, from delicate linework to symbolic custom designs.
           Use these to get a feel for pacing, detail level, and overall direction.
         </p>
       </div>
@@ -120,52 +88,53 @@
       <div class="container">
         <div class="gallery-toolbar reveal" aria-label="Gallery filters">
           <button class="filter-chip active" type="button" data-filter="all">All</button>
-          <button class="filter-chip" type="button" data-filter="botanical">Chaos</button>
+          <button class="filter-chip" type="button" data-filter="chaos">Chaos</button>
           <button class="filter-chip" type="button" data-filter="fineline">Fine Line</button>
-          <button class="filter-chip" type="button" data-filter="symbolic">Color</button>
+          <button class="filter-chip" type="button" data-filter="color">Color</button>
+          <button class="filter-chip filter-chip-launch" type="button" data-nuke-button>Launch</button>
         </div>
 
         <div class="gallery-grid" data-gallery-grid>
-          <article class="gallery-card reveal" data-category="botanical">
+          <article class="gallery-card reveal" data-category="chaos">
             <div class="gallery-art art-1" role="img" aria-label="Chaos handpoke tattoo detail"></div>
             <p class="artist-tag">Chaos</p>
-            <h3>Scatterline Motion</h3>
-            <p>Loose, energetic linework layered into a composition that feels restless and alive on skin.</p>
+            <h3>Lucky 7's</h3>
+            <p>Truth is.. the game was rigged from the start.</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="chaos">
+            <div class="gallery-art art-2" role="img" aria-label="Fine line handpoke tattoo study"></div>
+            <p class="artist-tag">Fine Line</p>
+            <h3>Butters</h3>
+            <p>car</p>
+          </article>
+
+          <article class="gallery-card reveal" data-category="chaos">
+            <div class="gallery-art art-3" role="img" aria-label="Color handpoke tattoo piece"></div>
+            <p class="artist-tag">Chaos</p>
+            <h3>Flours</h3>
+            <p>Hypnosis is a side effect</p>
           </article>
 
           <article class="gallery-card reveal" data-category="fineline">
-            <div class="gallery-art art-2" role="img" aria-label="Fine line handpoke tattoo study"></div>
-            <p class="artist-tag">Fine Line</p>
-            <h3>Needlelight Detail</h3>
-            <p>Delicate handpoke marks kept crisp and airy for a softer fine-line finish.</p>
-          </article>
-
-          <article class="gallery-card reveal" data-category="symbolic">
-            <div class="gallery-art art-3" role="img" aria-label="Color handpoke tattoo piece"></div>
-            <p class="artist-tag">Color</p>
-            <h3>Color Bloom</h3>
-            <p>Soft color packed into a handpoke-forward composition with warmth and contrast.</p>
-          </article>
-
-          <article class="gallery-card reveal" data-category="botanical">
             <div class="gallery-art art-4" role="img" aria-label="Chaos handpoke tattoo placement"></div>
             <p class="artist-tag">Chaos</p>
-            <h3>Fragment Study</h3>
-            <p>Broken-up shapes and uneven rhythm give this piece a rougher, more spontaneous energy.</p>
+            <h3>Little Guy Go Fast</h3>
+            <p>weeeeeeeee</p>
           </article>
 
           <article class="gallery-card reveal" data-category="fineline">
             <div class="gallery-art art-5" role="img" aria-label="Fine line handpoke composition"></div>
             <p class="artist-tag">Fine Line</p>
-            <h3>Quiet Precision</h3>
-            <p>Measured spacing and controlled marks keep the design subtle while still reading clearly.</p>
+            <h3>Quiet Flowers</h3>
+            <p>Precision, marksmanship, lines.</p>
           </article>
 
-          <article class="gallery-card reveal" data-category="symbolic">
+          <article class="gallery-card reveal" data-category="color">
             <div class="gallery-art art-6" role="img" aria-label="Color-forward handpoke tattoo design"></div>
             <p class="artist-tag">Color</p>
-            <h3>Color Static</h3>
-            <p>Bold color accents and textured mark-making push this one into a louder final read.</p>
+            <h3>Blue Flower</h3>
+            <p>Bold color and FLOWERS</p>
           </article>
         </div>
       </div>
@@ -208,7 +177,17 @@
         <p>Handpoke tattoo studio in Chillicothe, Ohio</p>
       </div>
       <div>
-        <p>63 E Water Street, Chillicothe, OH 45601</p>
+        <p>
+          <a
+            class="contact-link"
+            href="https://maps.apple.com/?q=63%20E%20Water%20Street%2C%20Chillicothe%2C%20OH%2045601"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Open studio address in maps"
+          >
+            63 E Water Street, Chillicothe, OH 45601
+          </a>
+        </p>
         <p>Sessions by appointment only.</p>
       </div>
     </div>
