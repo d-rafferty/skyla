@@ -1037,6 +1037,10 @@ body[data-page="gallery"] .section {
   padding: 1.5rem;
 }
 
+#booking {
+  scroll-margin-top: 0.1rem;
+}
+
 .booking-notes-card {
   margin: 0 auto 2rem;
   width: 100%;
@@ -1215,7 +1219,15 @@ body[data-page="home"].silly-mode .hero-copy h1 {
 }
 
 body[data-page="home"].silly-mode .accent-text {
-  color: #d5bb62;
+  display: inline-block;
+  padding-left: 0.04em;
+  padding-right: 0.16em;
+  margin-right: -0.08em;
+  background: linear-gradient(180deg, #f2f2f2 0%, #a8adb4 48%, #3d4046 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 body[data-page="home"].silly-mode .feature-panel,
