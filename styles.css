@@ -1121,19 +1121,19 @@ body[data-page="home"].silly-mode .site-header {
 
 body[data-page="home"].silly-mode .brand-mark {
   background:
-    radial-gradient(circle at 30% 30%, #34274f 0%, #34274f 28%, #d96cff 29%, #d96cff 58%, #68d4ff 59%, #68d4ff 100%);
-  color: #f6f0ff;
-  font-family: "Caveat", cursive;
-  font-size: 1.15rem;
-  letter-spacing: 0.03em;
-  border: 2px solid rgba(239, 231, 255, 0.16);
-  box-shadow: 0 0 0 4px rgba(217, 108, 255, 0.12);
+    linear-gradient(135deg, #68d4ff, #d96cff 55%, #ffd680);
+  color: #160f1f;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  border: 2px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 0 0 4px rgba(104, 212, 255, 0.12);
 }
 
 body[data-page="home"].silly-mode .brand-text strong {
-  font-family: "Caveat", cursive;
-  font-size: 1.45rem;
-  color: var(--silly-hot-pink);
+  font-family: inherit;
+  font-size: 0.98rem;
+  color: #fff4ff;
 }
 
 body[data-page="home"].silly-mode .brand-text span,
@@ -1290,7 +1290,8 @@ body[data-page="home"].silly-mode .fox-walker {
   position: absolute;
   display: block;
   left: -4.5rem;
-  top: 31rem;
+  top: clamp(24rem, 49vw, 28rem);
+  z-index: 3;
   width: 3.2rem;
   height: 3.2rem;
   filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.32));
