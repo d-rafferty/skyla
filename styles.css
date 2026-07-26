@@ -945,6 +945,18 @@ body[data-page="gallery"] .section {
     url("tattoos/IMG_6451.jpg");
 }
 
+.art-7 {
+  background-image:
+    linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
+    url("tattoos/leg1.jpeg");
+}
+
+.art-8 {
+  background-image:
+    linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
+    url("tattoos/shoulder1.jpeg");
+}
+
 .gallery-card p,
 .info-card p,
 .form-shell p,
