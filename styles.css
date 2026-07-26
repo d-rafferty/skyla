@@ -145,8 +145,7 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 20;
-  backdrop-filter: blur(14px);
-  background: rgba(247, 242, 232, 0.9);
+  background: rgba(247, 242, 232, 0.97);
   border-bottom: 1px solid rgba(31, 26, 23, 0.08);
 }
 
@@ -546,6 +545,9 @@ body[data-page="home"] .hero {
   gap: 1rem;
   width: max-content;
   align-items: stretch;
+}
+
+.scroll-gallery-track.is-animating {
   will-change: transform;
 }
 
@@ -621,10 +623,11 @@ body[data-page="home"] .hero {
 }
 
 .scroll-gallery-image {
+  display: block;
+  width: 100%;
   aspect-ratio: 4 / 5;
   border-radius: calc(var(--radius) - 8px);
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
 }
 
 
@@ -1115,6 +1118,13 @@ body[data-page="gallery"] .section {
   transform: translateY(0);
 }
 
+[data-pause-when-hidden].is-offscreen,
+[data-pause-when-hidden].is-offscreen *,
+[data-pause-when-hidden].is-page-hidden,
+[data-pause-when-hidden].is-page-hidden * {
+  animation-play-state: paused;
+}
+
 body[data-page="home"].silly-mode {
   background:
     radial-gradient(circle at 18% 12%, rgba(217, 108, 255, 0.22), transparent 18%),
@@ -1294,6 +1304,7 @@ body[data-page="home"].silly-mode .silly-skyline {
   display: block;
   position: absolute;
   inset: 5.8rem 0 auto;
+  height: 40rem;
   pointer-events: none;
   z-index: 1;
 }
@@ -1723,7 +1734,6 @@ body[data-page="contact"].silly-mode .form-status {
     left 2.4s ease-in-out,
     right 2.4s ease-in-out,
     transform 2.4s ease-in-out;
-  will-change: top, left, right, transform;
 }
 
 .sticker-star {
@@ -2123,5 +2133,25 @@ body[data-page="contact"].silly-mode .form-status {
 
   .truth-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
   }
 }

@@ -166,21 +166,55 @@ if (form && formStatus) {
 }
 
 const revealItems = document.querySelectorAll(".reveal");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 if (revealItems.length) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: .2 }
-  );
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: .2 }
+    );
 
-  revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => observer.observe(item));
+  }
+}
+
+const pausableAnimations = document.querySelectorAll("[data-pause-when-hidden]");
+
+if (pausableAnimations.length) {
+  const setPageAnimationState = () => {
+    pausableAnimations.forEach((element) => {
+      element.classList.toggle("is-page-hidden", document.hidden);
+    });
+  };
+
+  setPageAnimationState();
+  document.addEventListener("visibilitychange", setPageAnimationState);
+
+  if ("IntersectionObserver" in window) {
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-offscreen", !entry.isIntersecting);
+        });
+      },
+      { rootMargin: "160px 0px" }
+    );
+
+    pausableAnimations.forEach((element) => {
+      element.classList.add("is-offscreen");
+      animationObserver.observe(element);
+    });
+  }
 }
 
 if (currentPage === "home") {
@@ -557,6 +591,8 @@ if (currentPage === "home" && scrollGalleryTrack) {
   let lastTimestamp = 0;
   let galleryRafId = 0;
   let galleryLoopWidth = 0;
+  let galleryInView = false;
+  let resizeRafId = 0;
 
   const getGallerySpeed = () => 28;
   const getGalleryDirection = () => -1;
@@ -564,13 +600,15 @@ if (currentPage === "home" && scrollGalleryTrack) {
   const buildGalleryCard = ({ src, alt }, index) => {
     const card = document.createElement("article");
     card.className = "scroll-gallery-card";
-    card.setAttribute("aria-hidden", index >= homeGalleryImages.length ? "true" : "false");
+    const isDuplicate = index >= homeGalleryImages.length;
+    card.setAttribute("aria-hidden", String(isDuplicate));
 
-    const image = document.createElement("div");
+    const image = document.createElement("img");
     image.className = "scroll-gallery-image";
-    image.setAttribute("role", "img");
-    image.setAttribute("aria-label", alt);
-    image.style.backgroundImage = `url("${src}")`;
+    image.src = src;
+    image.alt = isDuplicate ? "" : alt;
+    image.loading = "lazy";
+    image.decoding = "async";
 
     card.append(image);
     return card;
@@ -579,16 +617,15 @@ if (currentPage === "home" && scrollGalleryTrack) {
   const measureGalleryLoop = () => {
     const cards = scrollGalleryTrack.querySelectorAll(".scroll-gallery-card");
     const firstSequenceCards = Array.from(cards).slice(0, homeGalleryImages.length);
+    const styles = window.getComputedStyle(scrollGalleryTrack);
+    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
 
     galleryLoopWidth = firstSequenceCards.reduce((width, card) => {
-      const cardWidth = card.getBoundingClientRect().width;
-      const styles = window.getComputedStyle(scrollGalleryTrack);
-      const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
-      return width + cardWidth + gap;
+      return width + card.getBoundingClientRect().width + gap;
     }, 0);
 
     if (galleryLoopWidth > 0) {
-      galleryLoopWidth -= Number.parseFloat(window.getComputedStyle(scrollGalleryTrack).columnGap || window.getComputedStyle(scrollGalleryTrack).gap || "0");
+      galleryLoopWidth -= gap;
     }
   };
 
@@ -619,17 +656,76 @@ if (currentPage === "home" && scrollGalleryTrack) {
     galleryRafId = window.requestAnimationFrame(tickGallery);
   };
 
-  initializeGallery();
-  paintGallery();
-  galleryRafId = window.requestAnimationFrame(tickGallery);
+  const shouldAnimateGallery = () => galleryInView && !document.hidden && !prefersReducedMotion.matches;
 
-  window.addEventListener("resize", () => {
+  const startGalleryAnimation = () => {
+    if (galleryRafId || !shouldAnimateGallery()) {
+      return;
+    }
+
+    scrollGalleryTrack.classList.add("is-animating");
+    lastTimestamp = 0;
+    galleryRafId = window.requestAnimationFrame(tickGallery);
+  };
+
+  const stopGalleryAnimation = () => {
+    if (galleryRafId) {
+      window.cancelAnimationFrame(galleryRafId);
+      galleryRafId = 0;
+    }
+
+    lastTimestamp = 0;
+    scrollGalleryTrack.classList.remove("is-animating");
+  };
+
+  const updateGalleryAnimation = () => {
+    if (shouldAnimateGallery()) {
+      startGalleryAnimation();
+    } else {
+      stopGalleryAnimation();
+    }
+  };
+
+  const resizeGallery = () => {
+    resizeRafId = 0;
     measureGalleryLoop();
     if (galleryLoopWidth > 0) {
       galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
     }
     paintGallery();
-  });
+  };
+
+  const scheduleGalleryResize = () => {
+    if (!resizeRafId) {
+      resizeRafId = window.requestAnimationFrame(resizeGallery);
+    }
+  };
+
+  initializeGallery();
+  paintGallery();
+
+  if ("IntersectionObserver" in window) {
+    const galleryObserver = new IntersectionObserver(
+      ([entry]) => {
+        galleryInView = entry.isIntersecting;
+        updateGalleryAnimation();
+      },
+      { rootMargin: "200px 0px" }
+    );
+    galleryObserver.observe(scrollGalleryTrack);
+  } else {
+    galleryInView = true;
+    updateGalleryAnimation();
+  }
+
+  document.addEventListener("visibilitychange", updateGalleryAnimation);
+  prefersReducedMotion.addEventListener("change", updateGalleryAnimation);
+
+  if ("ResizeObserver" in window) {
+    new ResizeObserver(scheduleGalleryResize).observe(scrollGalleryTrack);
+  } else {
+    window.addEventListener("resize", scheduleGalleryResize, { passive: true });
+  }
 }
 
 if (currentPage === "home" && owlDragger) {
