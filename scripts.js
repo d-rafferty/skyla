@@ -143,7 +143,6 @@ if (form && formStatus) {
     const email = form.querySelector("#email")?.value.trim() || "";
     const phone = form.querySelector("#phone")?.value.trim() || "Not provided";
     const placement = form.querySelector("#placement")?.value.trim() || "Not provided";
-    const style = form.querySelector("#style")?.selectedOptions?.[0]?.textContent?.trim() || "Not provided";
     const message = form.querySelector("#message")?.value.trim() || "";
 
     const subject = `Booking Request from ${name || "Website Visitor"}`;
@@ -154,7 +153,6 @@ if (form && formStatus) {
       `Email: ${email || "Not provided"}`,
       `Phone: ${phone}`,
       `Placement: ${placement}`,
-      `Preferred Style: ${style || "Not provided"}`,
       "",
       "Project Details:",
       message || "Not provided"
