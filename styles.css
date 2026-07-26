@@ -908,56 +908,41 @@ body[data-page="gallery"] .section {
   aspect-ratio: 4 / 5;
   border-radius: calc(var(--radius) - 6px);
   margin-bottom: 1rem;
+  background-image: var(--gallery-overlay), var(--gallery-image, none);
   background-size: cover;
   background-position: center;
 }
 
 .art-1 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.3), rgba(165, 62, 43, 0.15)),
-    url("tattoos/124A79D3-E221-4ED4-89FC-F30A6EF19AE9.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.3), rgba(165, 62, 43, 0.15));
 }
 
 .art-2 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(215, 177, 127, 0.18)),
-    url("tattoos/IMG_4188.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(215, 177, 127, 0.18));
 }
 
 .art-3 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(165, 62, 43, 0.18)),
-    url("tattoos/IMG_5746.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.2), rgba(165, 62, 43, 0.18));
 }
 
 .art-4 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(215, 177, 127, 0.12)),
-    url("tattoos/IMG_5750.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(215, 177, 127, 0.12));
 }
 
 .art-5 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(165, 62, 43, 0.12)),
-    url("tattoos/IMG_5751.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.18), rgba(165, 62, 43, 0.12));
 }
 
 .art-6 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
-    url("tattoos/IMG_6451.jpg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2));
 }
 
 .art-7 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
-    url("tattoos/leg1.jpeg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2));
 }
 
 .art-8 {
-  background-image:
-    linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2)),
-    url("tattoos/shoulder1.jpeg");
+  --gallery-overlay: linear-gradient(160deg, rgba(14, 14, 14, 0.24), rgba(215, 177, 127, 0.2));
 }
 
 .gallery-card p,
@@ -1305,20 +1290,25 @@ body[data-page="home"].silly-mode .silly-skyline {
   position: absolute;
   inset: 5.8rem 0 auto;
   height: 40rem;
+  contain: layout paint;
   pointer-events: none;
   z-index: 1;
 }
 
+body[data-page="home"].silly-mode .sticker {
+  animation: none;
+  filter: none;
+}
+
+body[data-page="home"].silly-mode .sticker-ufo {
+  top: 0;
+  right: auto;
+  left: 0;
+  transition: transform 2.4s ease-in-out;
+}
+
 body[data-page="home"].silly-mode .fox-walker {
-  position: absolute;
-  display: block;
-  left: -4.5rem;
-  top: clamp(24rem, 49vw, 28rem);
-  z-index: 3;
-  width: 3.2rem;
-  height: 3.2rem;
-  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.32));
-  animation: fox-walk-path 27s linear infinite;
+  display: none;
 }
 
 body[data-page="home"].silly-mode .fox-walker::before,
@@ -1463,7 +1453,7 @@ body[data-page="gallery"].silly-mode .page-hero {
 }
 
 body[data-page="gallery"].silly-mode .gallery-planet-orbit {
-  display: block;
+  display: none;
 }
 
 body[data-page="gallery"].silly-mode .gallery-planet {
@@ -1541,7 +1531,7 @@ body[data-page="gallery"].silly-mode .nuke-terminal-close {
 }
 
 body[data-page="gallery"].silly-mode .gallery-art {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+  box-shadow: none;
 }
 
 body[data-page="contact"].silly-mode {
@@ -2154,4 +2144,19 @@ body[data-page="contact"].silly-mode .form-status {
     opacity: 1;
     transform: none;
   }
+}
+
+body.silly-mode .site-nav a:hover,
+body.silly-mode .site-nav a:focus-visible,
+body.silly-mode .site-nav a.active {
+  background: rgba(104, 212, 255, 0.16);
+  color: #f7efff;
+}
+
+body.silly-mode .site-nav .button,
+body.silly-mode .site-nav .button:hover,
+body.silly-mode .site-nav .button:focus-visible {
+  background: linear-gradient(135deg, #4f296d, #8d3d72);
+  border-color: rgba(239, 231, 255, 0.2);
+  color: #fff;
 }

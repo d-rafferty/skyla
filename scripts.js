@@ -4,6 +4,7 @@ const currentPage = document.body.dataset.page;
 const navLinks = document.querySelectorAll(".site-nav a");
 const sillyToggle = document.querySelector("[data-silly-toggle]");
 const sillyUfo = document.querySelector(".sticker-ufo");
+const sillyUfoImage = document.querySelector(".sticker-ufo-image");
 const scrollGalleryTrack = document.querySelector("[data-scroll-gallery]");
 const owlDragger = document.querySelector("[data-owl-dragger]");
 const keyUnlockButton = document.querySelector("[data-key-unlock]");
@@ -115,6 +116,54 @@ navLinks.forEach((link) => {
 
 const filterButtons = document.querySelectorAll("[data-filter]");
 const galleryItems = document.querySelectorAll("[data-category]");
+const galleryArtItems = document.querySelectorAll("[data-gallery-image]");
+
+const loadGalleryArt = (art) => {
+  if (!art || art.dataset.loaded === "true") {
+    return;
+  }
+
+  const source = art.dataset.galleryImage;
+  if (!source) {
+    return;
+  }
+
+  art.dataset.loaded = "true";
+  const image = new Image();
+  image.decoding = "async";
+  image.src = source;
+
+  const paintImage = () => {
+    art.style.setProperty("--gallery-image", `url("${source}")`);
+  };
+
+  if ("decode" in image) {
+    image.decode().catch(() => {}).then(paintImage);
+  } else {
+    image.addEventListener("load", paintImage, { once: true });
+    image.addEventListener("error", paintImage, { once: true });
+  }
+};
+
+if (galleryArtItems.length) {
+  if ("IntersectionObserver" in window) {
+    const galleryArtObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadGalleryArt(entry.target);
+            galleryArtObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "600px 0px" }
+    );
+
+    galleryArtItems.forEach((art) => galleryArtObserver.observe(art));
+  } else {
+    galleryArtItems.forEach(loadGalleryArt);
+  }
+}
 
 if (filterButtons.length && galleryItems.length) {
   filterButtons.forEach((button) => {
@@ -233,10 +282,7 @@ if (currentPage === "home") {
     const rotate = Math.round(-18 + Math.random() * 36);
     const scale = (0.95 + Math.random() * 0.35).toFixed(2);
 
-    sillyUfo.style.left = `${left}%`;
-    sillyUfo.style.right = "auto";
-    sillyUfo.style.top = `${top}vh`;
-    sillyUfo.style.transform = `translate3d(0, 0, 0) rotate(${rotate}deg) scale(${scale})`;
+    sillyUfo.style.transform = `translate3d(${left}vw, ${top}vh, 0) rotate(${rotate}deg) scale(${scale})`;
 
     const nextDelay = 2500 + Math.round(Math.random() * 5000);
     sillyUfoTimeoutId = window.setTimeout(moveUfo, nextDelay);
@@ -245,6 +291,11 @@ if (currentPage === "home") {
   const startUfoWander = () => {
     if (!sillyUfo) {
       return;
+    }
+
+    const ufoSource = sillyUfoImage?.dataset.src;
+    if (ufoSource && !sillyUfoImage.getAttribute("src")) {
+      sillyUfoImage.src = ufoSource;
     }
 
     window.clearTimeout(sillyUfoTimeoutId);
@@ -261,6 +312,7 @@ if (currentPage === "home") {
     sillyUfo.style.right = "";
     sillyUfo.style.top = "";
     sillyUfo.style.transform = "";
+    sillyUfoImage?.removeAttribute("src");
   };
 
   const setSillyMode = (enabled) => {
@@ -581,11 +633,11 @@ if (currentPage === "gallery") {
 
 if (currentPage === "home" && scrollGalleryTrack) {
   const homeGalleryImages = [
-    { src: "images/IMG_4884.jpeg", alt: "Handpoke tattoo gallery image 1" },
-    { src: "images/IMG_4996.jpeg", alt: "Handpoke tattoo gallery image 2" },
-    { src: "images/IMG_6979.png", alt: "Handpoke tattoo gallery image 3" },
-    { src: "images/Untitled_Artwork 1.jpeg", alt: "Handpoke tattoo gallery image 4" },
-    { src: "images/Untitled_Artwork 2.jpeg", alt: "Handpoke tattoo gallery image 5" }
+    { src: "images/home-gallery-1.webp", alt: "Handpoke tattoo gallery image 1" },
+    { src: "images/home-gallery-2.webp", alt: "Handpoke tattoo gallery image 2" },
+    { src: "images/home-gallery-3.webp", alt: "Handpoke tattoo gallery image 3" },
+    { src: "images/home-gallery-4.webp", alt: "Handpoke tattoo gallery image 4" },
+    { src: "images/home-gallery-5.webp", alt: "Handpoke tattoo gallery image 5" }
   ];
   let galleryTranslateX = 0;
   let lastTimestamp = 0;
@@ -593,6 +645,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
   let galleryLoopWidth = 0;
   let galleryInView = false;
   let resizeRafId = 0;
+  let galleryInitialized = false;
 
   const getGallerySpeed = () => 28;
   const getGalleryDirection = () => -1;
@@ -630,9 +683,15 @@ if (currentPage === "home" && scrollGalleryTrack) {
   };
 
   const initializeGallery = () => {
+    if (galleryInitialized) {
+      return;
+    }
+
+    galleryInitialized = true;
     const galleryCards = [...homeGalleryImages, ...homeGalleryImages];
     scrollGalleryTrack.replaceChildren(...galleryCards.map(buildGalleryCard));
     measureGalleryLoop();
+    paintGallery();
   };
 
   const paintGallery = () => {
@@ -656,7 +715,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
     galleryRafId = window.requestAnimationFrame(tickGallery);
   };
 
-  const shouldAnimateGallery = () => galleryInView && !document.hidden && !prefersReducedMotion.matches;
+  const shouldAnimateGallery = () => galleryInitialized && galleryInView && !document.hidden && !prefersReducedMotion.matches;
 
   const startGalleryAnimation = () => {
     if (galleryRafId || !shouldAnimateGallery()) {
@@ -688,6 +747,10 @@ if (currentPage === "home" && scrollGalleryTrack) {
 
   const resizeGallery = () => {
     resizeRafId = 0;
+    if (!galleryInitialized) {
+      return;
+    }
+
     measureGalleryLoop();
     if (galleryLoopWidth > 0) {
       galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
@@ -701,19 +764,20 @@ if (currentPage === "home" && scrollGalleryTrack) {
     }
   };
 
-  initializeGallery();
-  paintGallery();
-
   if ("IntersectionObserver" in window) {
     const galleryObserver = new IntersectionObserver(
       ([entry]) => {
         galleryInView = entry.isIntersecting;
+        if (galleryInView) {
+          initializeGallery();
+        }
         updateGalleryAnimation();
       },
-      { rootMargin: "200px 0px" }
+      { rootMargin: "300px 0px" }
     );
-    galleryObserver.observe(scrollGalleryTrack);
+    galleryObserver.observe(scrollGalleryTrack.closest(".scroll-gallery-section") || scrollGalleryTrack);
   } else {
+    initializeGallery();
     galleryInView = true;
     updateGalleryAnimation();
   }
