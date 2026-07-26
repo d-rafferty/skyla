@@ -428,6 +428,10 @@ body[data-page="home"] .hero {
   line-height: 1.04;
 }
 
+.hero-heading-dark-image {
+  display: none;
+}
+
 .hero-text,
 .lead {
   color: var(--muted);
@@ -1218,11 +1222,38 @@ body[data-page="home"].silly-mode .panel-label {
 }
 
 body[data-page="home"].silly-mode .hero-copy h1 {
+  max-width: 44rem;
   font-family: "Caveat", cursive;
   font-size: clamp(3.1rem, 9vw, 5.8rem);
   line-height: 0.94;
-  transform: rotate(-1.5deg);
+  transform: translateX(-2rem) translateY(2rem) rotate(0.5deg);
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.45);
+}
+
+body[data-page="home"].silly-mode .hero-heading-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+body[data-page="home"].silly-mode .hero-heading-dark-image {
+  display: block;
+  width: min(100%, 44rem);
+  aspect-ratio: 2.3 / 1;
+  overflow: hidden;
+}
+
+body[data-page="home"].silly-mode .hero-heading-dark-image img {
+  display: block;
+  width: 150%;
+  max-width: none;
+  transform: translate(-17%, -32%);
 }
 
 body[data-page="home"].silly-mode .accent-text {

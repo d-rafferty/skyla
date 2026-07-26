@@ -5,6 +5,7 @@ const navLinks = document.querySelectorAll(".site-nav a");
 const sillyToggle = document.querySelector("[data-silly-toggle]");
 const sillyUfo = document.querySelector(".sticker-ufo");
 const sillyUfoImage = document.querySelector(".sticker-ufo-image");
+const darkHeroHeadingImage = document.querySelector("[data-dark-hero-heading]");
 const scrollGalleryTrack = document.querySelector("[data-scroll-gallery]");
 const owlDragger = document.querySelector("[data-owl-dragger]");
 const keyUnlockButton = document.querySelector("[data-key-unlock]");
@@ -318,6 +319,13 @@ if (currentPage === "home") {
   const setSillyMode = (enabled) => {
     updateSillyModeUi(enabled);
     window.localStorage.setItem(sillyModeKey, String(enabled));
+    const darkHeadingSource = darkHeroHeadingImage?.dataset.src;
+    if (darkHeadingSource && enabled) {
+      darkHeroHeadingImage.src = darkHeadingSource;
+    } else if (darkHeroHeadingImage) {
+      darkHeroHeadingImage.removeAttribute("src");
+    }
+
     if (keyUnlockButton) {
       keyUnlockButton.classList.toggle("is-visible", enabled && unlockTriggered);
     }
