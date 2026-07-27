@@ -647,27 +647,15 @@ if (currentPage === "home" && scrollGalleryTrack) {
     { src: "images/home-gallery-4.webp", alt: "Handpoke tattoo gallery image 4" },
     { src: "images/home-gallery-5.webp", alt: "Handpoke tattoo gallery image 5" }
   ];
-  let galleryTranslateX = 0;
-  let lastTimestamp = 0;
-  let galleryRafId = 0;
-  let galleryLoopWidth = 0;
-  let galleryInView = false;
-  let resizeRafId = 0;
-  let galleryInitialized = false;
 
-  const getGallerySpeed = () => 28;
-  const getGalleryDirection = () => -1;
-
-  const buildGalleryCard = ({ src, alt }, index) => {
+  const buildGalleryCard = ({ src, alt }) => {
     const card = document.createElement("article");
     card.className = "scroll-gallery-card";
-    const isDuplicate = index >= homeGalleryImages.length;
-    card.setAttribute("aria-hidden", String(isDuplicate));
 
     const image = document.createElement("img");
     image.className = "scroll-gallery-image";
     image.src = src;
-    image.alt = isDuplicate ? "" : alt;
+    image.alt = alt;
     image.loading = "lazy";
     image.decoding = "async";
 
@@ -675,129 +663,10 @@ if (currentPage === "home" && scrollGalleryTrack) {
     return card;
   };
 
-  const measureGalleryLoop = () => {
-    const cards = scrollGalleryTrack.querySelectorAll(".scroll-gallery-card");
-    const firstSequenceCards = Array.from(cards).slice(0, homeGalleryImages.length);
-    const styles = window.getComputedStyle(scrollGalleryTrack);
-    const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
-
-    galleryLoopWidth = firstSequenceCards.reduce((width, card) => {
-      return width + card.getBoundingClientRect().width + gap;
-    }, 0);
-
-    if (galleryLoopWidth > 0) {
-      galleryLoopWidth -= gap;
-    }
-  };
-
-  const initializeGallery = () => {
-    if (galleryInitialized) {
-      return;
-    }
-
-    galleryInitialized = true;
-    const galleryCards = [...homeGalleryImages, ...homeGalleryImages];
-    scrollGalleryTrack.replaceChildren(...galleryCards.map(buildGalleryCard));
-    measureGalleryLoop();
-    paintGallery();
-  };
-
-  const paintGallery = () => {
-    scrollGalleryTrack.style.transform = `translate3d(${galleryTranslateX}px, 0, 0)`;
-  };
-
-  const tickGallery = (timestamp) => {
-    if (!lastTimestamp) {
-      lastTimestamp = timestamp;
-    }
-
-    const deltaSeconds = (timestamp - lastTimestamp) / 1000;
-    lastTimestamp = timestamp;
-    galleryTranslateX += getGalleryDirection() * getGallerySpeed() * deltaSeconds;
-
-    if (galleryLoopWidth > 0) {
-      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
-    }
-
-    paintGallery();
-    galleryRafId = window.requestAnimationFrame(tickGallery);
-  };
-
-  const shouldAnimateGallery = () => galleryInitialized && galleryInView && !document.hidden && !prefersReducedMotion.matches;
-
-  const startGalleryAnimation = () => {
-    if (galleryRafId || !shouldAnimateGallery()) {
-      return;
-    }
-
-    scrollGalleryTrack.classList.add("is-animating");
-    lastTimestamp = 0;
-    galleryRafId = window.requestAnimationFrame(tickGallery);
-  };
-
-  const stopGalleryAnimation = () => {
-    if (galleryRafId) {
-      window.cancelAnimationFrame(galleryRafId);
-      galleryRafId = 0;
-    }
-
-    lastTimestamp = 0;
-    scrollGalleryTrack.classList.remove("is-animating");
-  };
-
-  const updateGalleryAnimation = () => {
-    if (shouldAnimateGallery()) {
-      startGalleryAnimation();
-    } else {
-      stopGalleryAnimation();
-    }
-  };
-
-  const resizeGallery = () => {
-    resizeRafId = 0;
-    if (!galleryInitialized) {
-      return;
-    }
-
-    measureGalleryLoop();
-    if (galleryLoopWidth > 0) {
-      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
-    }
-    paintGallery();
-  };
-
-  const scheduleGalleryResize = () => {
-    if (!resizeRafId) {
-      resizeRafId = window.requestAnimationFrame(resizeGallery);
-    }
-  };
-
-  if ("IntersectionObserver" in window) {
-    const galleryObserver = new IntersectionObserver(
-      ([entry]) => {
-        galleryInView = entry.isIntersecting;
-        if (galleryInView) {
-          initializeGallery();
-        }
-        updateGalleryAnimation();
-      },
-      { rootMargin: "300px 0px" }
-    );
-    galleryObserver.observe(scrollGalleryTrack.closest(".scroll-gallery-section") || scrollGalleryTrack);
-  } else {
-    initializeGallery();
-    galleryInView = true;
-    updateGalleryAnimation();
-  }
-
-  document.addEventListener("visibilitychange", updateGalleryAnimation);
-  prefersReducedMotion.addEventListener("change", updateGalleryAnimation);
-
-  if ("ResizeObserver" in window) {
-    new ResizeObserver(scheduleGalleryResize).observe(scrollGalleryTrack);
-  } else {
-    window.addEventListener("resize", scheduleGalleryResize, { passive: true });
-  }
+  const galleryCards = homeGalleryImages.map(buildGalleryCard);
+  scrollGalleryTrack.replaceChildren(...galleryCards);
+  scrollGalleryTrack.classList.remove("is-animating");
+  scrollGalleryTrack.style.transform = "none";
 }
 
 if (currentPage === "home" && owlDragger) {
