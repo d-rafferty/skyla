@@ -285,7 +285,6 @@ if (pausableAnimations.length) {
 
 if (hasFoxRunnerPage && foxWalker && foxLane) {
   const foxSpeedPxPerSecond = 390;
-  const foxRowStepPx = 132;
   const foxStartTopPx = 18;
   const foxBottomPaddingPx = 16;
   const foxEdgeExitPx = 26;
