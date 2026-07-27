@@ -6,7 +6,7 @@
   <title>Definitely Not Tattoos</title>
   <meta
     name="description"
-    content="Browse handpoke tattoo work from tmp, including fine line, botanical, symbol, and custom minimalist pieces."
+    content="Browse handpoke tattoo work from tmp, including floral, ornamental, symbol, and custom minimalist pieces."
   >
   <link
     rel="icon"
@@ -53,26 +53,50 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="gallery.html">Gallery</a>
+        <a href="flash.html">Flash</a>
         <a class="button button-small" href="contact.html">Book Now</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <div class="gallery-planet-orbit" aria-hidden="true">
+    <div class="gallery-planet-orbit" aria-hidden="true" data-pause-when-hidden>
       <span class="gallery-planet">
         <img src="sprites/planit.svg" alt="">
       </span>
     </div>
 
     <div class="img-wrapper" aria-hidden="true">
-        <img src="sprites/" alt="" class="flexible-image img-float-1">
-        <img src="sprites/butterfly.svg" alt="" class="flexible-image img-float-2">
-        <img src="sprites/" alt="" class="flexible-image img-float-3">
-        <img src="sprites/face.jpg" alt="" class="flexible-image img-float-4">
-        <img src="sprites/garden.svg" alt="" class="flexible-image img-float-6">
-        <img src="sprites/skelly.svg" alt="" class="flexible-image img-float-7">
+      <img src="sprites/skelly.svg" alt="" class="flexible-image img-float-7" loading="lazy" decoding="async">
+      <img src="drawings/light/Sun.PNG" alt="" class="flexible-image light-drawing light-drawing-sun" loading="lazy" decoding="async">
+      <img src="drawings/light/clover1.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-1" loading="lazy" decoding="async">
+      <img src="drawings/light/clover2.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-2" loading="lazy" decoding="async">
+      <img src="drawings/light/clover3.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-3" loading="lazy" decoding="async">
+      <img src="drawings/light/clover4.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-4" loading="lazy" decoding="async">
+      <img src="drawings/light/clover5.webp" alt="" class="flexible-image light-drawing light-drawing-clover-5" loading="lazy" decoding="async">
+      <img src="drawings/light/stuff1.PNG" alt="" class="flexible-image light-drawing light-drawing-stuff-1" loading="lazy" decoding="async">
+      <img src="drawings/light/stuff2.PNG" alt="" class="flexible-image light-drawing light-drawing-stuff-2" loading="lazy" decoding="async">
     </div>
+
+    <div class="silly-skyline" aria-hidden="true" data-pause-when-hidden>
+      <span class="sticker sticker-flower">
+        <img class="sticker-image" src="drawings/dark/bunny.png" alt="">
+      </span>
+      <span class="sticker sticker-ufo">
+        <img class="sticker-image sticker-ufo-image" src="drawings/dark/ufo.png" alt="">
+      </span>
+      <span class="sticker sticker-star">
+        <img class="sticker-image" src="drawings/dark/star.png" alt="">
+      </span>
+      <span class="sticker sticker-heart">
+        <img class="sticker-image" src="drawings/dark/alien-nobg.png" alt="">
+      </span>
+      <span class="sticker sticker-sparkle">
+        <img class="sticker-image" src="drawings/dark/mouth.png" alt="">
+      </span>
+      <span class="fox-walker" aria-hidden="true"></span>
+    </div>
+
     <section class="page-hero">
       <div class="container reveal">
         <p class="eyebrow">Selected Handpoke Work</p>
@@ -89,66 +113,67 @@
         <div class="gallery-toolbar reveal" aria-label="Gallery filters">
           <button class="filter-chip active" type="button" data-filter="all">All</button>
           <button class="filter-chip" type="button" data-filter="chaos">Chaos</button>
-          <button class="filter-chip" type="button" data-filter="fineline">Fine Line</button>
-          <button class="filter-chip" type="button" data-filter="color">Color</button>
+          <button class="filter-chip" type="button" data-filter="floral">Floral</button>
+          <button class="filter-chip" type="button" data-filter="ornamental">Ornamental</button>
+          <button class="filter-chip" type="button" data-filter="lettering">Lettering</button>
           <button class="filter-chip filter-chip-launch" type="button" data-nuke-button>Launch</button>
         </div>
 
         <div class="gallery-grid" data-gallery-grid>
           <article class="gallery-card reveal" data-category="chaos">
-            <div class="gallery-art art-1" role="img" aria-label="Chaos handpoke tattoo detail"></div>
+            <div class="gallery-art art-1" role="img" aria-label="Chaos handpoke tattoo detail" data-gallery-image="tattoos/gallery-1.webp"></div>
             <p class="artist-tag">Chaos</p>
             <h3>Lucky 7's</h3>
             <p>Truth is.. the game was rigged from the start.</p>
           </article>
 
           <article class="gallery-card reveal" data-category="chaos">
-            <div class="gallery-art art-2" role="img" aria-label="Fine line handpoke tattoo study"></div>
+            <div class="gallery-art art-2" role="img" aria-label="Floral handpoke tattoo study" data-gallery-image="tattoos/gallery-2.webp"></div>
             <p class="artist-tag">Chaos</p>
             <h3>Butters</h3>
             <p>car</p>
           </article>
 
           <article class="gallery-card reveal" data-category="chaos">
-            <div class="gallery-art art-3" role="img" aria-label="Color handpoke tattoo piece"></div>
+            <div class="gallery-art art-3" role="img" aria-label="Ornamental handpoke tattoo piece" data-gallery-image="tattoos/gallery-3.webp"></div>
             <p class="artist-tag">Chaos</p>
             <h3>Flours</h3>
             <p>Hypnosis is a side effect</p>
           </article>
 
-          <article class="gallery-card reveal" data-category="fineline">
-            <div class="gallery-art art-4" role="img" aria-label="Chaos handpoke tattoo placement"></div>
-            <p class="artist-tag">Fine Line</p>
+          <article class="gallery-card reveal" data-category="floral">
+            <div class="gallery-art art-4" role="img" aria-label="Chaos handpoke tattoo placement" data-gallery-image="tattoos/gallery-4.webp"></div>
+            <p class="artist-tag">Floral</p>
             <h3>Little Guy Go Fast</h3>
             <p>weeeeeeeee</p>
           </article>
 
-          <article class="gallery-card reveal" data-category="fineline">
-            <div class="gallery-art art-5" role="img" aria-label="Fine line handpoke composition"></div>
-            <p class="artist-tag">Fine Line</p>
+          <article class="gallery-card reveal" data-category="floral">
+            <div class="gallery-art art-5" role="img" aria-label="Floral handpoke composition" data-gallery-image="tattoos/gallery-5.webp"></div>
+            <p class="artist-tag">Floral</p>
             <h3>Quiet Flowers</h3>
             <p>Precision, marksmanship, momentum.</p>
           </article>
 
-          <article class="gallery-card reveal" data-category="color">
-            <div class="gallery-art art-6" role="img" aria-label="Color-forward handpoke tattoo design"></div>
-            <p class="artist-tag">Color</p>
+          <article class="gallery-card reveal" data-category="ornamental">
+            <div class="gallery-art art-6" role="img" aria-label="Ornamental handpoke tattoo design" data-gallery-image="tattoos/gallery-6.webp"></div>
+            <p class="artist-tag">Ornamental</p>
             <h3>Blue Flower</h3>
             <p>spray perfume directly here for maximum immersion</p>
           </article>
 
           <article class="gallery-card reveal" data-category="chaos">
-            <div class="gallery-art art-7" role="img" aria-label="Color-forward handpoke tattoo design"></div>
+            <div class="gallery-art art-7" role="img" aria-label="Ornamental handpoke tattoo design" data-gallery-image="tattoos/gallery-7.webp"></div>
             <p class="artist-tag">Chaos</p>
-            <h3>Aku Aku</h3>
-            <p>wumpa</p>
+            <h3>Daruma Doll</h3>
+            <p>es for gewd luck</p>
           </article>
 
           <article class="gallery-card reveal" data-category="chaos">
-            <div class="gallery-art art-8" role="img" aria-label="Color-forward handpoke tattoo design"></div>
+            <div class="gallery-art art-8" role="img" aria-label="Ornamental handpoke tattoo design" data-gallery-image="tattoos/gallery-8.webp"></div>
             <p class="artist-tag">Chaos</p>
-            <h3>Flar</h3>
-            <p>in da middle</p>
+            <h3>Ornamental Leaves</h3>
+            <p>they just are</p>
           </article>
         </div>
       </div>

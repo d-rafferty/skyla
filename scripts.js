@@ -4,6 +4,10 @@ const currentPage = document.body.dataset.page;
 const navLinks = document.querySelectorAll(".site-nav a");
 const sillyToggle = document.querySelector("[data-silly-toggle]");
 const sillyUfo = document.querySelector(".sticker-ufo");
+const sillyUfoImage = document.querySelector(".sticker-ufo-image");
+const foxWalker = document.querySelector(".fox-walker");
+const foxLane = document.querySelector(".silly-skyline");
+const darkHeroHeadingImage = document.querySelector("[data-dark-hero-heading]");
 const scrollGalleryTrack = document.querySelector("[data-scroll-gallery]");
 const owlDragger = document.querySelector("[data-owl-dragger]");
 const keyUnlockButton = document.querySelector("[data-key-unlock]");
@@ -11,6 +15,20 @@ const radioTuner = document.querySelector("[data-radio-tuner]");
 const frequencyReadout = document.querySelector("[data-frequency-readout]");
 const radioStatus = document.querySelector("[data-radio-status]");
 const sillyModeKey = "site-silly-mode";
+const hasDecoratedDarkMode = currentPage === "home" || currentPage === "flash";
+const hasFoxRunnerPage = currentPage === "home" || currentPage === "gallery" || currentPage === "flash";
+let ufoCoordinatorReady = false;
+const deferredUfoCallbacks = [];
+let runUfoThen = (callback) => {
+  if (!ufoCoordinatorReady) {
+    if (typeof callback === "function") {
+      deferredUfoCallbacks.push(callback);
+    }
+    return;
+  }
+
+  callback?.();
+};
 
 const getIncomingSillyMode = () => {
   const params = new URLSearchParams(window.location.search);
@@ -67,11 +85,11 @@ const updateSillyModeUi = (enabled) => {
   }
 };
 
-if (currentPage !== "home") {
+if (!hasDecoratedDarkMode) {
   updateSillyModeUi(savedSillyMode);
 }
 
-if (currentPage !== "home" && sillyToggle) {
+if (!hasDecoratedDarkMode && sillyToggle) {
   sillyToggle.addEventListener("click", () => {
     const nextState = !document.body.classList.contains("silly-mode");
     updateSillyModeUi(nextState);
@@ -115,6 +133,54 @@ navLinks.forEach((link) => {
 
 const filterButtons = document.querySelectorAll("[data-filter]");
 const galleryItems = document.querySelectorAll("[data-category]");
+const galleryArtItems = document.querySelectorAll("[data-gallery-image]");
+
+const loadGalleryArt = (art) => {
+  if (!art || art.dataset.loaded === "true") {
+    return;
+  }
+
+  const source = art.dataset.galleryImage;
+  if (!source) {
+    return;
+  }
+
+  art.dataset.loaded = "true";
+  const image = new Image();
+  image.decoding = "async";
+  image.src = source;
+
+  const paintImage = () => {
+    art.style.setProperty("--gallery-image", `url("${source}")`);
+  };
+
+  if ("decode" in image) {
+    image.decode().catch(() => {}).then(paintImage);
+  } else {
+    image.addEventListener("load", paintImage, { once: true });
+    image.addEventListener("error", paintImage, { once: true });
+  }
+};
+
+if (galleryArtItems.length) {
+  if ("IntersectionObserver" in window) {
+    const galleryArtObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            loadGalleryArt(entry.target);
+            galleryArtObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "600px 0px" }
+    );
+
+    galleryArtItems.forEach((art) => galleryArtObserver.observe(art));
+  } else {
+    galleryArtItems.forEach(loadGalleryArt);
+  }
+}
 
 if (filterButtons.length && galleryItems.length) {
   filterButtons.forEach((button) => {
@@ -166,55 +232,374 @@ if (form && formStatus) {
 }
 
 const revealItems = document.querySelectorAll(".reveal");
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 if (revealItems.length) {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: .2 }
-  );
+  if (prefersReducedMotion.matches || !("IntersectionObserver" in window)) {
+    revealItems.forEach((item) => item.classList.add("is-visible"));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: .2 }
+    );
 
-  revealItems.forEach((item) => observer.observe(item));
+    revealItems.forEach((item) => observer.observe(item));
+  }
 }
 
-if (currentPage === "home") {
+const pausableAnimations = document.querySelectorAll("[data-pause-when-hidden]");
+
+if (pausableAnimations.length) {
+  const setPageAnimationState = () => {
+    pausableAnimations.forEach((element) => {
+      element.classList.toggle("is-page-hidden", document.hidden);
+    });
+  };
+
+  setPageAnimationState();
+  document.addEventListener("visibilitychange", setPageAnimationState);
+
+  if ("IntersectionObserver" in window) {
+    const animationObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          entry.target.classList.toggle("is-offscreen", !entry.isIntersecting);
+        });
+      },
+      { rootMargin: "160px 0px" }
+    );
+
+    pausableAnimations.forEach((element) => {
+      element.classList.add("is-offscreen");
+      animationObserver.observe(element);
+    });
+  }
+}
+
+if (hasFoxRunnerPage && foxWalker && foxLane) {
+  const foxSpeedPxPerSecond = 390;
+  const foxRowStepPx = 132;
+  const foxStartTopPx = 18;
+  const foxBottomPaddingPx = 16;
+  const foxEdgeExitPx = 26;
+  const foxOffscreenPaddingPx = 48;
+  const foxFrameIntervalMs = 1000 / 30;
+  const foxToUfoDelayMs = 1800;
+
+  let foxDirection = 1;
+  let foxX = 0;
+  let foxY = foxStartTopPx;
+  let foxLastTimestamp = 0;
+  let foxRafId = 0;
+  let foxLaneWidth = 0;
+  let foxLaneHeight = 0;
+  let foxWidth = 96;
+  let foxHeight = 96;
+  let foxStartQueued = false;
+  let foxHandoffTimeoutId = 0;
+
+  const updateFoxMeasurements = () => {
+    const laneRect = foxLane.getBoundingClientRect();
+    const foxRect = foxWalker.getBoundingClientRect();
+
+    foxLaneWidth = laneRect.width || foxLaneWidth || 0;
+    foxLaneHeight = laneRect.height || foxLaneHeight || 0;
+    foxWidth = foxRect.width || foxWidth || 96;
+    foxHeight = foxRect.height || foxHeight || 96;
+  };
+
+  const getMaxFoxTop = () => Math.max(foxStartTopPx, foxLaneHeight - foxHeight - foxBottomPaddingPx);
+
+  const ensureFoxMeasurements = () => {
+    if (foxLaneWidth > 1 && foxLaneHeight > 1 && foxWidth > 1 && foxHeight > 1) {
+      return;
+    }
+
+    updateFoxMeasurements();
+
+    if (foxLaneWidth <= 1) {
+      foxLaneWidth = Math.max(foxLaneWidth, window.innerWidth || 0);
+    }
+
+    if (foxLaneHeight <= 1) {
+      foxLaneHeight = Math.max(foxLaneHeight, Math.round((window.innerHeight || 720) * 0.45));
+    }
+  };
+
+  const getRightEdgeExit = () => foxLaneWidth + foxEdgeExitPx + foxOffscreenPaddingPx;
+  const getLeftEdgeExit = () => -foxWidth - foxEdgeExitPx - foxOffscreenPaddingPx;
+
+  const getRandomFoxTop = () => {
+    const maxFoxTop = getMaxFoxTop();
+    if (maxFoxTop <= foxStartTopPx) {
+      return foxStartTopPx;
+    }
+
+    return Math.round(foxStartTopPx + Math.random() * (maxFoxTop - foxStartTopPx));
+  };
+
+  const setFoxFacing = () => {
+    foxWalker.classList.toggle("is-facing-right", foxDirection === 1);
+    foxWalker.classList.toggle("is-facing-left", foxDirection === -1);
+  };
+
+  const applyFoxState = () => {
+    foxWalker.style.transform = `translate3d(${foxX}px, ${foxY}px, 0)`;
+  };
+
+  const stageFoxForNextRun = (useRandomStart = true) => {
+    ensureFoxMeasurements();
+
+    if (useRandomStart) {
+      foxDirection = Math.random() < 0.5 ? 1 : -1;
+    }
+
+    foxY = useRandomStart ? getRandomFoxTop() : foxStartTopPx;
+    foxX = foxDirection === 1 ? getLeftEdgeExit() : getRightEdgeExit();
+    setFoxFacing();
+    applyFoxState();
+  };
+
+  const runUfoMovesThen = (remainingMoves, onDone) => {
+    if (remainingMoves <= 0) {
+      onDone?.();
+      return;
+    }
+
+    runUfoThen(() => {
+      runUfoMovesThen(remainingMoves - 1, onDone);
+    });
+  };
+
+  const handoffFoxToUfo = () => {
+    stageFoxForNextRun(true);
+    stopFoxRunner();
+    foxStartQueued = true;
+
+    if (foxHandoffTimeoutId) {
+      window.clearTimeout(foxHandoffTimeoutId);
+      foxHandoffTimeoutId = 0;
+    }
+
+    foxHandoffTimeoutId = window.setTimeout(() => {
+      foxHandoffTimeoutId = 0;
+      runUfoMovesThen(3, () => {
+        foxStartQueued = false;
+        if (!shouldRunFox()) {
+          return;
+        }
+
+        stageFoxForNextRun(true);
+        startFoxRunner();
+      });
+    }, foxToUfoDelayMs);
+  };
+
+  const resetFoxTrack = () => {
+    stageFoxForNextRun(true);
+  };
+
+  const shouldRunFox = () => document.body.classList.contains("silly-mode") && !document.hidden;
+
+  const stopFoxRunner = () => {
+    if (foxRafId) {
+      window.cancelAnimationFrame(foxRafId);
+      foxRafId = 0;
+    }
+
+    if (foxHandoffTimeoutId) {
+      window.clearTimeout(foxHandoffTimeoutId);
+      foxHandoffTimeoutId = 0;
+    }
+
+    foxStartQueued = false;
+    foxLastTimestamp = 0;
+  };
+
+  const tickFox = (timestamp) => {
+    foxRafId = 0;
+
+    if (!shouldRunFox()) {
+      stopFoxRunner();
+      return;
+    }
+
+    if (!foxLastTimestamp) {
+      foxLastTimestamp = timestamp;
+    }
+
+    const elapsedMs = timestamp - foxLastTimestamp;
+    if (elapsedMs < foxFrameIntervalMs) {
+      foxRafId = window.requestAnimationFrame(tickFox);
+      return;
+    }
+
+    const deltaSeconds = elapsedMs / 1000;
+    foxLastTimestamp = timestamp;
+    foxX += foxDirection * foxSpeedPxPerSecond * deltaSeconds;
+
+    const rightEdgeExit = getRightEdgeExit();
+    const leftEdgeExit = getLeftEdgeExit();
+
+    if (foxDirection === 1 && foxX >= rightEdgeExit) {
+      foxX = rightEdgeExit;
+      foxDirection = -1;
+      handoffFoxToUfo();
+      return;
+    } else if (foxDirection === -1 && foxX <= leftEdgeExit) {
+      foxX = leftEdgeExit;
+      foxDirection = 1;
+      handoffFoxToUfo();
+      return;
+    }
+
+    applyFoxState();
+    foxRafId = window.requestAnimationFrame(tickFox);
+  };
+
+  const startFoxRunner = () => {
+    if (foxRafId || foxStartQueued || !shouldRunFox()) {
+      return;
+    }
+
+    updateFoxMeasurements();
+    stageFoxForNextRun(true);
+    foxLastTimestamp = 0;
+    foxRafId = window.requestAnimationFrame(tickFox);
+  };
+
+  const requestFoxStart = () => {
+    if (foxRafId || foxStartQueued || !shouldRunFox()) {
+      return;
+    }
+
+    if (!hasDecoratedDarkMode) {
+      startFoxRunner();
+      return;
+    }
+
+    foxStartQueued = true;
+    runUfoMovesThen(3, () => {
+      foxStartQueued = false;
+      if (!shouldRunFox()) {
+        return;
+      }
+
+      startFoxRunner();
+    });
+  };
+
+  resetFoxTrack();
+  requestFoxStart();
+
+  window.addEventListener("resize", () => {
+    updateFoxMeasurements();
+    const rightEdgeExit = getRightEdgeExit();
+    const leftEdgeExit = getLeftEdgeExit();
+    foxX = Math.min(rightEdgeExit, Math.max(leftEdgeExit, foxX));
+    foxY = Math.max(foxStartTopPx, Math.min(getMaxFoxTop(), foxY));
+    applyFoxState();
+  });
+
+  if ("ResizeObserver" in window) {
+    const foxResizeObserver = new ResizeObserver(() => {
+      updateFoxMeasurements();
+    });
+
+    foxResizeObserver.observe(foxLane);
+    foxResizeObserver.observe(foxWalker);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (shouldRunFox()) {
+      requestFoxStart();
+      return;
+    }
+
+    stopFoxRunner();
+  });
+
+  const sillyModeObserver = new MutationObserver(() => {
+    if (shouldRunFox()) {
+      requestFoxStart();
+      return;
+    }
+
+    stopFoxRunner();
+  });
+
+  sillyModeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+}
+
+if (hasDecoratedDarkMode) {
   const unlockSequence = "cvhwpmbgvm";
+  const ufoMaxRotate = 18;
+  const ufoMinScale = 0.95;
+  const ufoScaleRange = 0.35;
+  const ufoMoveDurationMs = 2500;
+  const ufoGapBetweenMovesMs = 1800;
   let sillyUfoTimeoutId;
   let typedBuffer = "";
   let unlockTriggered = false;
+  let isUfoMoving = false;
+  const pendingUfoCallbacks = [];
 
-  const moveUfo = () => {
-    if (!sillyUfo || !document.body.classList.contains("silly-mode")) {
+  const shouldRunUfo = () => document.body.classList.contains("silly-mode") && !document.hidden;
+
+  const setRandomUfoTransform = () => {
+    if (!sillyUfo) {
       return;
     }
 
     const top = Math.round(4 + Math.random() * 78);
     const left = Math.round(2 + Math.random() * 92);
-    const rotate = Math.round(-18 + Math.random() * 36);
-    const scale = (0.95 + Math.random() * 0.35).toFixed(2);
+    const rotate = Math.round(-ufoMaxRotate + Math.random() * (ufoMaxRotate * 2));
+    const scale = (ufoMinScale + Math.random() * ufoScaleRange).toFixed(2);
 
-    sillyUfo.style.left = `${left}%`;
-    sillyUfo.style.right = "auto";
-    sillyUfo.style.top = `${top}vh`;
-    sillyUfo.style.transform = `translate3d(0, 0, 0) rotate(${rotate}deg) scale(${scale})`;
-
-    const nextDelay = 2500 + Math.round(Math.random() * 5000);
-    sillyUfoTimeoutId = window.setTimeout(moveUfo, nextDelay);
+    sillyUfo.style.transform = `translate3d(${left}vw, ${top}vh, 0) rotate(${rotate}deg) scale(${scale})`;
   };
 
-  const startUfoWander = () => {
-    if (!sillyUfo) {
+  const moveUfo = () => {
+    if (!sillyUfo || !shouldRunUfo()) {
+      const callback = pendingUfoCallbacks.shift();
+      callback?.();
+
       return;
     }
 
+    setRandomUfoTransform();
+
+    sillyUfoTimeoutId = window.setTimeout(() => {
+      isUfoMoving = false;
+      sillyUfoTimeoutId = window.setTimeout(() => {
+        const callback = pendingUfoCallbacks.shift();
+        callback?.();
+      }, ufoGapBetweenMovesMs);
+    }, ufoMoveDurationMs);
+  };
+
+  const startUfoWander = () => {
+    if (!sillyUfo || !shouldRunUfo()) {
+      return;
+    }
+
+    const ufoSource = sillyUfoImage?.dataset.src;
+    if (ufoSource && !sillyUfoImage.getAttribute("src")) {
+      sillyUfoImage.src = ufoSource;
+    }
+
     window.clearTimeout(sillyUfoTimeoutId);
-    moveUfo();
+    isUfoMoving = false;
   };
 
   const stopUfoWander = () => {
@@ -223,15 +608,51 @@ if (currentPage === "home") {
     }
 
     window.clearTimeout(sillyUfoTimeoutId);
+    isUfoMoving = false;
     sillyUfo.style.left = "";
     sillyUfo.style.right = "";
     sillyUfo.style.top = "";
     sillyUfo.style.transform = "";
+    sillyUfoImage?.removeAttribute("src");
   };
+
+  runUfoThen = (callback) => {
+    if (!sillyUfo || !shouldRunUfo()) {
+      callback?.();
+      return;
+    }
+
+    pendingUfoCallbacks.push(callback);
+
+    if (isUfoMoving) {
+      return;
+    }
+
+    const ufoSource = sillyUfoImage?.dataset.src;
+    if (ufoSource && !sillyUfoImage.getAttribute("src")) {
+      sillyUfoImage.src = ufoSource;
+    }
+
+    isUfoMoving = true;
+    moveUfo();
+  };
+
+  ufoCoordinatorReady = true;
+  if (deferredUfoCallbacks.length) {
+    const queuedCallbacks = deferredUfoCallbacks.splice(0, deferredUfoCallbacks.length);
+    queuedCallbacks.forEach((callback) => runUfoThen(callback));
+  }
 
   const setSillyMode = (enabled) => {
     updateSillyModeUi(enabled);
     window.localStorage.setItem(sillyModeKey, String(enabled));
+    const darkHeadingSource = darkHeroHeadingImage?.dataset.src;
+    if (darkHeadingSource && enabled) {
+      darkHeroHeadingImage.src = darkHeadingSource;
+    } else if (darkHeroHeadingImage) {
+      darkHeroHeadingImage.removeAttribute("src");
+    }
+
     if (keyUnlockButton) {
       keyUnlockButton.classList.toggle("is-visible", enabled && unlockTriggered);
     }
@@ -260,20 +681,31 @@ if (currentPage === "home") {
     setSillyMode(event.newValue === "true");
   });
 
-  window.addEventListener("keydown", (event) => {
-    if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+  document.addEventListener("visibilitychange", () => {
+    if (shouldRunUfo()) {
+      startUfoWander();
       return;
     }
 
-    typedBuffer = `${typedBuffer}${event.key.toLowerCase()}`.slice(-unlockSequence.length);
-
-    if (typedBuffer === unlockSequence && document.body.classList.contains("silly-mode")) {
-      unlockTriggered = true;
-      if (keyUnlockButton) {
-        keyUnlockButton.classList.add("is-visible");
-      }
-    }
+    stopUfoWander();
   });
+
+  if (currentPage === "home") {
+    window.addEventListener("keydown", (event) => {
+      if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+        return;
+      }
+
+      typedBuffer = `${typedBuffer}${event.key.toLowerCase()}`.slice(-unlockSequence.length);
+
+      if (typedBuffer === unlockSequence && document.body.classList.contains("silly-mode")) {
+        unlockTriggered = true;
+        if (keyUnlockButton) {
+          keyUnlockButton.classList.add("is-visible");
+        }
+      }
+    });
+  }
 }
 
 if (currentPage === "gallery") {
@@ -547,92 +979,35 @@ if (currentPage === "gallery") {
 
 if (currentPage === "home" && scrollGalleryTrack) {
   const homeGalleryImages = [
-    { src: "images/IMG_4884.jpeg", alt: "Handpoke tattoo gallery image 1" },
-    { src: "images/IMG_4996.jpeg", alt: "Handpoke tattoo gallery image 2" },
-    { src: "images/IMG_6979.png", alt: "Handpoke tattoo gallery image 3" },
-    { src: "images/Untitled_Artwork 1.jpeg", alt: "Handpoke tattoo gallery image 4" },
-    { src: "images/Untitled_Artwork 2.jpeg", alt: "Handpoke tattoo gallery image 5" }
+    { src: "images/home-gallery-1.webp", alt: "Handpoke tattoo gallery image 1" },
+    { src: "images/home-gallery-2.webp", alt: "Handpoke tattoo gallery image 2" },
+    { src: "images/home-gallery-3.webp", alt: "Handpoke tattoo gallery image 3" },
+    { src: "images/home-gallery-4.webp", alt: "Handpoke tattoo gallery image 4" },
+    { src: "images/home-gallery-5.webp", alt: "Handpoke tattoo gallery image 5" }
   ];
-  let galleryTranslateX = 0;
-  let lastTimestamp = 0;
-  let galleryRafId = 0;
-  let galleryLoopWidth = 0;
 
-  const getGallerySpeed = () => 28;
-  const getGalleryDirection = () => -1;
-
-  const buildGalleryCard = ({ src, alt }, index) => {
+  const buildGalleryCard = ({ src, alt }) => {
     const card = document.createElement("article");
     card.className = "scroll-gallery-card";
-    card.setAttribute("aria-hidden", index >= homeGalleryImages.length ? "true" : "false");
 
-    const image = document.createElement("div");
+    const image = document.createElement("img");
     image.className = "scroll-gallery-image";
-    image.setAttribute("role", "img");
-    image.setAttribute("aria-label", alt);
-    image.style.backgroundImage = `url("${src}")`;
+    image.src = src;
+    image.alt = alt;
+    image.loading = "lazy";
+    image.decoding = "async";
 
     card.append(image);
     return card;
   };
 
-  const measureGalleryLoop = () => {
-    const cards = scrollGalleryTrack.querySelectorAll(".scroll-gallery-card");
-    const firstSequenceCards = Array.from(cards).slice(0, homeGalleryImages.length);
-
-    galleryLoopWidth = firstSequenceCards.reduce((width, card) => {
-      const cardWidth = card.getBoundingClientRect().width;
-      const styles = window.getComputedStyle(scrollGalleryTrack);
-      const gap = Number.parseFloat(styles.columnGap || styles.gap || "0");
-      return width + cardWidth + gap;
-    }, 0);
-
-    if (galleryLoopWidth > 0) {
-      galleryLoopWidth -= Number.parseFloat(window.getComputedStyle(scrollGalleryTrack).columnGap || window.getComputedStyle(scrollGalleryTrack).gap || "0");
-    }
-  };
-
-  const initializeGallery = () => {
-    const galleryCards = [...homeGalleryImages, ...homeGalleryImages];
-    scrollGalleryTrack.replaceChildren(...galleryCards.map(buildGalleryCard));
-    measureGalleryLoop();
-  };
-
-  const paintGallery = () => {
-    scrollGalleryTrack.style.transform = `translate3d(${galleryTranslateX}px, 0, 0)`;
-  };
-
-  const tickGallery = (timestamp) => {
-    if (!lastTimestamp) {
-      lastTimestamp = timestamp;
-    }
-
-    const deltaSeconds = (timestamp - lastTimestamp) / 1000;
-    lastTimestamp = timestamp;
-    galleryTranslateX += getGalleryDirection() * getGallerySpeed() * deltaSeconds;
-
-    if (galleryLoopWidth > 0) {
-      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
-    }
-
-    paintGallery();
-    galleryRafId = window.requestAnimationFrame(tickGallery);
-  };
-
-  initializeGallery();
-  paintGallery();
-  galleryRafId = window.requestAnimationFrame(tickGallery);
-
-  window.addEventListener("resize", () => {
-    measureGalleryLoop();
-    if (galleryLoopWidth > 0) {
-      galleryTranslateX = ((galleryTranslateX % galleryLoopWidth) + galleryLoopWidth) % galleryLoopWidth - galleryLoopWidth;
-    }
-    paintGallery();
-  });
+  const galleryCards = homeGalleryImages.map(buildGalleryCard);
+  scrollGalleryTrack.replaceChildren(...galleryCards);
+  scrollGalleryTrack.classList.remove("is-animating");
+  scrollGalleryTrack.style.transform = "none";
 }
 
-if (currentPage === "home" && owlDragger) {
+if (hasDecoratedDarkMode && owlDragger) {
   let owlPointerId = null;
   let owlOriginX = 0;
   let owlOriginY = 0;

@@ -54,12 +54,25 @@
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
         <a href="index.html">Home</a>
         <a href="gallery.html">Gallery</a>
+        <a href="flash.html">Flash</a>
         <a class="button button-small" href="contact.html">Book Now</a>
       </nav>
     </div>
   </header>
 
   <main>
+    <div class="img-wrapper" aria-hidden="true">
+      <img src="sprites/skelly.svg" alt="" class="flexible-image img-float-7" loading="lazy" decoding="async">
+      <img src="drawings/light/Sun.PNG" alt="" class="flexible-image light-drawing light-drawing-sun" loading="lazy" decoding="async">
+      <img src="drawings/light/clover1.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-1" loading="lazy" decoding="async">
+      <img src="drawings/light/clover2.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-2" loading="lazy" decoding="async">
+      <img src="drawings/light/clover3.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-3" loading="lazy" decoding="async">
+      <img src="drawings/light/clover4.PNG" alt="" class="flexible-image light-drawing light-drawing-clover-4" loading="lazy" decoding="async">
+      <img src="drawings/light/clover5.webp" alt="" class="flexible-image light-drawing light-drawing-clover-5" loading="lazy" decoding="async">
+      <img src="drawings/light/stuff1.PNG" alt="" class="flexible-image light-drawing light-drawing-stuff-1" loading="lazy" decoding="async">
+      <img src="drawings/light/stuff2.PNG" alt="" class="flexible-image light-drawing light-drawing-stuff-2" loading="lazy" decoding="async">
+    </div>
+
     <div class="owl-stack">
       <a class="owl-secret-button" href="secret.html">./secret</a>
       <button class="owl-dragger" type="button" data-owl-dragger aria-label="Drag owl away">
@@ -67,14 +80,22 @@
       </button>
     </div>
 
-    <div class="silly-skyline" aria-hidden="true">
-      <span class="sticker sticker-flower">🌼</span>
-      <span class="sticker sticker-ufo">
-        <img class="sticker-ufo-image" src="sprites/ufo.png" alt="">
+    <div class="silly-skyline" aria-hidden="true" data-pause-when-hidden>
+      <span class="sticker sticker-flower">
+        <img class="sticker-image" src="drawings/dark/bunny.png" alt="">
       </span>
-      <span class="sticker sticker-star">★</span>
-      <span class="sticker sticker-heart">♥</span>
-      <span class="sticker sticker-sparkle">✦</span>
+      <span class="sticker sticker-ufo">
+        <img class="sticker-image sticker-ufo-image" data-src="drawings/dark/ufo.png" alt="">
+      </span>
+      <span class="sticker sticker-star">
+        <img class="sticker-image" src="drawings/dark/star.png" alt="">
+      </span>
+      <span class="sticker sticker-heart">
+        <img class="sticker-image" src="drawings/dark/alien-nobg.png" alt="">
+      </span>
+      <span class="sticker sticker-sparkle">
+        <img class="sticker-image" src="drawings/dark/mouth.png" alt="">
+      </span>
       <span class="fox-walker" aria-hidden="true"></span>
     </div>
 
@@ -82,7 +103,12 @@
       <div class="container hero-grid">
         <div class="hero-copy reveal">
           <p class="eyebrow">Chillicothe Handpoke Studio</p>
-          <h1>Handpoked tattoos made with <span class="accent-text">patience</span>, <span class="accent-text">precision</span>, and <span class="accent-text">care</span>.</h1>
+          <h1 class="hero-heading">
+            <span class="hero-heading-text">Handpoked tattoos made with <span class="accent-text">patience</span>, <span class="accent-text">precision</span>, and <span class="accent-text">care</span>.</span>
+            <span class="hero-heading-dark-image" aria-hidden="true">
+              <img data-dark-hero-heading data-src="drawings/WhiteText1.png" alt="">
+            </span>
+          </h1>
           <p class="hero-text">
             I offer custom handpoke tattoos and small-batch flash in a calm,
             appointment-focused space for clients who want a more personal experience.
@@ -175,8 +201,6 @@
 
     <section class="section scroll-gallery-section">
       <div class="container reveal">
-        <p class="eyebrow">Recent Work</p>
-        
       </div>
       <div class="scroll-gallery" aria-label="Scrolling tattoo gallery">
         <div class="scroll-gallery-track" data-scroll-gallery></div>
