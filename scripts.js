@@ -5,6 +5,8 @@ const navLinks = document.querySelectorAll(".site-nav a");
 const sillyToggle = document.querySelector("[data-silly-toggle]");
 const sillyUfo = document.querySelector(".sticker-ufo");
 const sillyUfoImage = document.querySelector(".sticker-ufo-image");
+const foxWalker = document.querySelector(".fox-walker");
+const foxLane = document.querySelector(".silly-skyline");
 const darkHeroHeadingImage = document.querySelector("[data-dark-hero-heading]");
 const scrollGalleryTrack = document.querySelector("[data-scroll-gallery]");
 const owlDragger = document.querySelector("[data-owl-dragger]");
@@ -13,6 +15,20 @@ const radioTuner = document.querySelector("[data-radio-tuner]");
 const frequencyReadout = document.querySelector("[data-frequency-readout]");
 const radioStatus = document.querySelector("[data-radio-status]");
 const sillyModeKey = "site-silly-mode";
+const hasDecoratedDarkMode = currentPage === "home" || currentPage === "flash";
+const hasFoxRunnerPage = currentPage === "home" || currentPage === "gallery" || currentPage === "flash";
+let ufoCoordinatorReady = false;
+const deferredUfoCallbacks = [];
+let runUfoThen = (callback) => {
+  if (!ufoCoordinatorReady) {
+    if (typeof callback === "function") {
+      deferredUfoCallbacks.push(callback);
+    }
+    return;
+  }
+
+  callback?.();
+};
 
 const getIncomingSillyMode = () => {
   const params = new URLSearchParams(window.location.search);
@@ -69,11 +85,11 @@ const updateSillyModeUi = (enabled) => {
   }
 };
 
-if (currentPage !== "home") {
+if (!hasDecoratedDarkMode) {
   updateSillyModeUi(savedSillyMode);
 }
 
-if (currentPage !== "home" && sillyToggle) {
+if (!hasDecoratedDarkMode && sillyToggle) {
   sillyToggle.addEventListener("click", () => {
     const nextState = !document.body.classList.contains("silly-mode");
     updateSillyModeUi(nextState);
@@ -267,30 +283,313 @@ if (pausableAnimations.length) {
   }
 }
 
-if (currentPage === "home") {
+if (hasFoxRunnerPage && foxWalker && foxLane) {
+  const foxSpeedPxPerSecond = 390;
+  const foxRowStepPx = 132;
+  const foxStartTopPx = 18;
+  const foxBottomPaddingPx = 16;
+  const foxEdgeExitPx = 26;
+  const foxOffscreenPaddingPx = 48;
+  const foxFrameIntervalMs = 1000 / 30;
+  const foxToUfoDelayMs = 1800;
+
+  let foxDirection = 1;
+  let foxX = 0;
+  let foxY = foxStartTopPx;
+  let foxLastTimestamp = 0;
+  let foxRafId = 0;
+  let foxLaneWidth = 0;
+  let foxLaneHeight = 0;
+  let foxWidth = 96;
+  let foxHeight = 96;
+  let foxStartQueued = false;
+  let foxHandoffTimeoutId = 0;
+
+  const updateFoxMeasurements = () => {
+    const laneRect = foxLane.getBoundingClientRect();
+    const foxRect = foxWalker.getBoundingClientRect();
+
+    foxLaneWidth = laneRect.width || foxLaneWidth || 0;
+    foxLaneHeight = laneRect.height || foxLaneHeight || 0;
+    foxWidth = foxRect.width || foxWidth || 96;
+    foxHeight = foxRect.height || foxHeight || 96;
+  };
+
+  const getMaxFoxTop = () => Math.max(foxStartTopPx, foxLaneHeight - foxHeight - foxBottomPaddingPx);
+
+  const ensureFoxMeasurements = () => {
+    if (foxLaneWidth > 1 && foxLaneHeight > 1 && foxWidth > 1 && foxHeight > 1) {
+      return;
+    }
+
+    updateFoxMeasurements();
+
+    if (foxLaneWidth <= 1) {
+      foxLaneWidth = Math.max(foxLaneWidth, window.innerWidth || 0);
+    }
+
+    if (foxLaneHeight <= 1) {
+      foxLaneHeight = Math.max(foxLaneHeight, Math.round((window.innerHeight || 720) * 0.45));
+    }
+  };
+
+  const getRightEdgeExit = () => foxLaneWidth + foxEdgeExitPx + foxOffscreenPaddingPx;
+  const getLeftEdgeExit = () => -foxWidth - foxEdgeExitPx - foxOffscreenPaddingPx;
+
+  const getRandomFoxTop = () => {
+    const maxFoxTop = getMaxFoxTop();
+    if (maxFoxTop <= foxStartTopPx) {
+      return foxStartTopPx;
+    }
+
+    return Math.round(foxStartTopPx + Math.random() * (maxFoxTop - foxStartTopPx));
+  };
+
+  const setFoxFacing = () => {
+    foxWalker.classList.toggle("is-facing-right", foxDirection === 1);
+    foxWalker.classList.toggle("is-facing-left", foxDirection === -1);
+  };
+
+  const applyFoxState = () => {
+    foxWalker.style.transform = `translate3d(${foxX}px, ${foxY}px, 0)`;
+  };
+
+  const stageFoxForNextRun = (useRandomStart = true) => {
+    ensureFoxMeasurements();
+
+    if (useRandomStart) {
+      foxDirection = Math.random() < 0.5 ? 1 : -1;
+    }
+
+    foxY = useRandomStart ? getRandomFoxTop() : foxStartTopPx;
+    foxX = foxDirection === 1 ? getLeftEdgeExit() : getRightEdgeExit();
+    setFoxFacing();
+    applyFoxState();
+  };
+
+  const runUfoMovesThen = (remainingMoves, onDone) => {
+    if (remainingMoves <= 0) {
+      onDone?.();
+      return;
+    }
+
+    runUfoThen(() => {
+      runUfoMovesThen(remainingMoves - 1, onDone);
+    });
+  };
+
+  const handoffFoxToUfo = () => {
+    stageFoxForNextRun(true);
+    stopFoxRunner();
+    foxStartQueued = true;
+
+    if (foxHandoffTimeoutId) {
+      window.clearTimeout(foxHandoffTimeoutId);
+      foxHandoffTimeoutId = 0;
+    }
+
+    foxHandoffTimeoutId = window.setTimeout(() => {
+      foxHandoffTimeoutId = 0;
+      runUfoMovesThen(3, () => {
+        foxStartQueued = false;
+        if (!shouldRunFox()) {
+          return;
+        }
+
+        stageFoxForNextRun(true);
+        startFoxRunner();
+      });
+    }, foxToUfoDelayMs);
+  };
+
+  const resetFoxTrack = () => {
+    stageFoxForNextRun(true);
+  };
+
+  const shouldRunFox = () => document.body.classList.contains("silly-mode") && !document.hidden;
+
+  const stopFoxRunner = () => {
+    if (foxRafId) {
+      window.cancelAnimationFrame(foxRafId);
+      foxRafId = 0;
+    }
+
+    if (foxHandoffTimeoutId) {
+      window.clearTimeout(foxHandoffTimeoutId);
+      foxHandoffTimeoutId = 0;
+    }
+
+    foxStartQueued = false;
+    foxLastTimestamp = 0;
+  };
+
+  const tickFox = (timestamp) => {
+    foxRafId = 0;
+
+    if (!shouldRunFox()) {
+      stopFoxRunner();
+      return;
+    }
+
+    if (!foxLastTimestamp) {
+      foxLastTimestamp = timestamp;
+    }
+
+    const elapsedMs = timestamp - foxLastTimestamp;
+    if (elapsedMs < foxFrameIntervalMs) {
+      foxRafId = window.requestAnimationFrame(tickFox);
+      return;
+    }
+
+    const deltaSeconds = elapsedMs / 1000;
+    foxLastTimestamp = timestamp;
+    foxX += foxDirection * foxSpeedPxPerSecond * deltaSeconds;
+
+    const rightEdgeExit = getRightEdgeExit();
+    const leftEdgeExit = getLeftEdgeExit();
+
+    if (foxDirection === 1 && foxX >= rightEdgeExit) {
+      foxX = rightEdgeExit;
+      foxDirection = -1;
+      handoffFoxToUfo();
+      return;
+    } else if (foxDirection === -1 && foxX <= leftEdgeExit) {
+      foxX = leftEdgeExit;
+      foxDirection = 1;
+      handoffFoxToUfo();
+      return;
+    }
+
+    applyFoxState();
+    foxRafId = window.requestAnimationFrame(tickFox);
+  };
+
+  const startFoxRunner = () => {
+    if (foxRafId || foxStartQueued || !shouldRunFox()) {
+      return;
+    }
+
+    updateFoxMeasurements();
+    stageFoxForNextRun(true);
+    foxLastTimestamp = 0;
+    foxRafId = window.requestAnimationFrame(tickFox);
+  };
+
+  const requestFoxStart = () => {
+    if (foxRafId || foxStartQueued || !shouldRunFox()) {
+      return;
+    }
+
+    if (!hasDecoratedDarkMode) {
+      startFoxRunner();
+      return;
+    }
+
+    foxStartQueued = true;
+    runUfoMovesThen(3, () => {
+      foxStartQueued = false;
+      if (!shouldRunFox()) {
+        return;
+      }
+
+      startFoxRunner();
+    });
+  };
+
+  resetFoxTrack();
+  requestFoxStart();
+
+  window.addEventListener("resize", () => {
+    updateFoxMeasurements();
+    const rightEdgeExit = getRightEdgeExit();
+    const leftEdgeExit = getLeftEdgeExit();
+    foxX = Math.min(rightEdgeExit, Math.max(leftEdgeExit, foxX));
+    foxY = Math.max(foxStartTopPx, Math.min(getMaxFoxTop(), foxY));
+    applyFoxState();
+  });
+
+  if ("ResizeObserver" in window) {
+    const foxResizeObserver = new ResizeObserver(() => {
+      updateFoxMeasurements();
+    });
+
+    foxResizeObserver.observe(foxLane);
+    foxResizeObserver.observe(foxWalker);
+  }
+
+  document.addEventListener("visibilitychange", () => {
+    if (shouldRunFox()) {
+      requestFoxStart();
+      return;
+    }
+
+    stopFoxRunner();
+  });
+
+  const sillyModeObserver = new MutationObserver(() => {
+    if (shouldRunFox()) {
+      requestFoxStart();
+      return;
+    }
+
+    stopFoxRunner();
+  });
+
+  sillyModeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+}
+
+if (hasDecoratedDarkMode) {
   const unlockSequence = "cvhwpmbgvm";
+  const ufoMaxRotate = 18;
+  const ufoMinScale = 0.95;
+  const ufoScaleRange = 0.35;
+  const ufoMoveDurationMs = 2500;
+  const ufoGapBetweenMovesMs = 1800;
   let sillyUfoTimeoutId;
   let typedBuffer = "";
   let unlockTriggered = false;
+  let isUfoMoving = false;
+  const pendingUfoCallbacks = [];
 
-  const moveUfo = () => {
-    if (!sillyUfo || !document.body.classList.contains("silly-mode")) {
+  const shouldRunUfo = () => document.body.classList.contains("silly-mode") && !document.hidden;
+
+  const setRandomUfoTransform = () => {
+    if (!sillyUfo) {
       return;
     }
 
     const top = Math.round(4 + Math.random() * 78);
     const left = Math.round(2 + Math.random() * 92);
-    const rotate = Math.round(-18 + Math.random() * 36);
-    const scale = (0.95 + Math.random() * 0.35).toFixed(2);
+    const rotate = Math.round(-ufoMaxRotate + Math.random() * (ufoMaxRotate * 2));
+    const scale = (ufoMinScale + Math.random() * ufoScaleRange).toFixed(2);
 
     sillyUfo.style.transform = `translate3d(${left}vw, ${top}vh, 0) rotate(${rotate}deg) scale(${scale})`;
+  };
 
-    const nextDelay = 2500 + Math.round(Math.random() * 5000);
-    sillyUfoTimeoutId = window.setTimeout(moveUfo, nextDelay);
+  const moveUfo = () => {
+    if (!sillyUfo || !shouldRunUfo()) {
+      const callback = pendingUfoCallbacks.shift();
+      callback?.();
+
+      return;
+    }
+
+    setRandomUfoTransform();
+
+    sillyUfoTimeoutId = window.setTimeout(() => {
+      isUfoMoving = false;
+      sillyUfoTimeoutId = window.setTimeout(() => {
+        const callback = pendingUfoCallbacks.shift();
+        callback?.();
+      }, ufoGapBetweenMovesMs);
+    }, ufoMoveDurationMs);
   };
 
   const startUfoWander = () => {
-    if (!sillyUfo) {
+    if (!sillyUfo || !shouldRunUfo()) {
       return;
     }
 
@@ -300,7 +599,7 @@ if (currentPage === "home") {
     }
 
     window.clearTimeout(sillyUfoTimeoutId);
-    moveUfo();
+    isUfoMoving = false;
   };
 
   const stopUfoWander = () => {
@@ -309,12 +608,40 @@ if (currentPage === "home") {
     }
 
     window.clearTimeout(sillyUfoTimeoutId);
+    isUfoMoving = false;
     sillyUfo.style.left = "";
     sillyUfo.style.right = "";
     sillyUfo.style.top = "";
     sillyUfo.style.transform = "";
     sillyUfoImage?.removeAttribute("src");
   };
+
+  runUfoThen = (callback) => {
+    if (!sillyUfo || !shouldRunUfo()) {
+      callback?.();
+      return;
+    }
+
+    pendingUfoCallbacks.push(callback);
+
+    if (isUfoMoving) {
+      return;
+    }
+
+    const ufoSource = sillyUfoImage?.dataset.src;
+    if (ufoSource && !sillyUfoImage.getAttribute("src")) {
+      sillyUfoImage.src = ufoSource;
+    }
+
+    isUfoMoving = true;
+    moveUfo();
+  };
+
+  ufoCoordinatorReady = true;
+  if (deferredUfoCallbacks.length) {
+    const queuedCallbacks = deferredUfoCallbacks.splice(0, deferredUfoCallbacks.length);
+    queuedCallbacks.forEach((callback) => runUfoThen(callback));
+  }
 
   const setSillyMode = (enabled) => {
     updateSillyModeUi(enabled);
@@ -354,20 +681,31 @@ if (currentPage === "home") {
     setSillyMode(event.newValue === "true");
   });
 
-  window.addEventListener("keydown", (event) => {
-    if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+  document.addEventListener("visibilitychange", () => {
+    if (shouldRunUfo()) {
+      startUfoWander();
       return;
     }
 
-    typedBuffer = `${typedBuffer}${event.key.toLowerCase()}`.slice(-unlockSequence.length);
-
-    if (typedBuffer === unlockSequence && document.body.classList.contains("silly-mode")) {
-      unlockTriggered = true;
-      if (keyUnlockButton) {
-        keyUnlockButton.classList.add("is-visible");
-      }
-    }
+    stopUfoWander();
   });
+
+  if (currentPage === "home") {
+    window.addEventListener("keydown", (event) => {
+      if (event.ctrlKey || event.metaKey || event.altKey || event.key.length !== 1) {
+        return;
+      }
+
+      typedBuffer = `${typedBuffer}${event.key.toLowerCase()}`.slice(-unlockSequence.length);
+
+      if (typedBuffer === unlockSequence && document.body.classList.contains("silly-mode")) {
+        unlockTriggered = true;
+        if (keyUnlockButton) {
+          keyUnlockButton.classList.add("is-visible");
+        }
+      }
+    });
+  }
 }
 
 if (currentPage === "gallery") {
@@ -669,7 +1007,7 @@ if (currentPage === "home" && scrollGalleryTrack) {
   scrollGalleryTrack.style.transform = "none";
 }
 
-if (currentPage === "home" && owlDragger) {
+if (hasDecoratedDarkMode && owlDragger) {
   let owlPointerId = null;
   let owlOriginX = 0;
   let owlOriginY = 0;
