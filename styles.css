@@ -107,6 +107,66 @@ body {
   transform-origin: bottom left;
   z-index: 2;
 }
+
+.light-drawing {
+  z-index: 1;
+}
+
+.light-drawing-sun {
+  top: 6rem;
+  right: 8%;
+  width: 8.5rem;
+  transform: rotate(7deg);
+}
+
+.light-drawing-clover-1 {
+  top: 20rem;
+  left: 7%;
+  width: 6.4rem;
+  transform: rotate(-12deg);
+}
+
+.light-drawing-clover-2 {
+  top: 30rem;
+  right: 6%;
+  width: 7.1rem;
+  transform: rotate(11deg);
+}
+
+.light-drawing-clover-3 {
+  top: 42rem;
+  left: 9%;
+  width: 6.8rem;
+  transform: rotate(8deg);
+}
+
+.light-drawing-clover-4 {
+  top: 57rem;
+  right: 8%;
+  width: 7.4rem;
+  transform: rotate(-9deg);
+}
+
+.light-drawing-clover-5 {
+  top: 72rem;
+  left: 7%;
+  width: 6.5rem;
+  transform: rotate(10deg);
+}
+
+.light-drawing-stuff-1 {
+  top: 82rem;
+  right: 7%;
+  width: 8.2rem;
+  transform: rotate(-7deg);
+}
+
+.light-drawing-stuff-2 {
+  top: 96rem;
+  left: 8%;
+  width: 7.6rem;
+  transform: rotate(9deg);
+}
 img {
   display: block;
   max-width: 100%;
@@ -1470,6 +1530,10 @@ body[data-page="gallery"].silly-mode .mode-toggle.is-active .switch-knob {
 body[data-page="gallery"].silly-mode main {
   position: relative;
   overflow: hidden;
+}
+
+body[data-page="gallery"].silly-mode .img-wrapper {
+  display: none;
 }
 
 body[data-page="gallery"].silly-mode .page-hero,
