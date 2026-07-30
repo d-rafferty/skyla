@@ -1413,6 +1413,26 @@ body[data-page="gallery"] .section {
   min-height: 9rem;
 }
 
+body[data-page="contact"] .form-row textarea::placeholder,
+body[data-page="contact"] .form-row input::placeholder,
+body[data-page="contact"] .form-row select::placeholder {
+  color: rgba(31, 26, 23, 0.68);
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  body[data-page="contact"] .form-row textarea {
+    min-height: 11rem;
+    font-size: 1rem;
+    line-height: 1.42;
+  }
+
+  body[data-page="contact"] .form-row textarea::placeholder {
+    font-size: 0.98rem;
+    line-height: 1.42;
+  }
+}
+
 .field-note,
 .form-status {
   margin: 0;
@@ -1949,6 +1969,13 @@ body[data-page="flash"] main {
 
 body[data-page="contact"].silly-mode .form-row label {
   color: #f7efff;
+}
+
+body[data-page="contact"].silly-mode .form-row textarea::placeholder,
+body[data-page="contact"].silly-mode .form-row input::placeholder,
+body[data-page="contact"].silly-mode .form-row select::placeholder {
+  color: rgba(246, 239, 255, 0.78);
+  opacity: 1;
 }
 
 body[data-page="contact"].silly-mode .form-status {
