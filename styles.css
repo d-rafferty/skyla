@@ -771,7 +771,7 @@ body[data-page="flash"] .hero {
 
 @media (max-width: 960px) {
   body[data-page="flash"] .container.flash-layout {
-    width: min(calc(100% - 1rem), var(--max-width));
+    width: min(calc(100% - 2.5rem), var(--max-width));
   }
 
   .flash-layout {
@@ -805,7 +805,7 @@ body[data-page="flash"] .hero {
 
 @media (max-width: 620px) {
   body[data-page="flash"] .container.flash-layout {
-    width: min(calc(100% - 0.75rem), var(--max-width));
+    width: min(calc(100% - 2rem), var(--max-width));
   }
 }
 
