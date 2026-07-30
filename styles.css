@@ -825,7 +825,7 @@ body[data-page="flash"] .hero {
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
     top: clamp(8.2rem, 26vh, 14.8rem);
-    left: clamp(0rem, 0.35vw, 0.35rem);
+    left: 0;
     right: auto;
     --sticker-min: 11.5rem;
     --sticker-vmin: 33;
