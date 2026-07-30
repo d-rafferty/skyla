@@ -771,7 +771,7 @@ body[data-page="flash"] .hero {
 
 @media (max-width: 960px) {
   body[data-page="flash"] .container.flash-layout {
-    width: min(calc(100% - 7.5rem), var(--max-width));
+    width: min(calc(100% - 12.5rem), var(--max-width));
   }
 
   .flash-layout {
@@ -805,7 +805,20 @@ body[data-page="flash"] .hero {
 
 @media (max-width: 620px) {
   body[data-page="flash"] .container.flash-layout {
-    width: min(calc(100% - 7rem), var(--max-width));
+    width: min(calc(100% - 12rem), var(--max-width));
+  }
+}
+
+@media (max-width: 760px) {
+  body[data-page="flash"].silly-mode .sticker-star {
+    top: clamp(8.2rem, 26vh, 14.8rem);
+  }
+
+  body[data-page="flash"].silly-mode .sticker-heart {
+    top: clamp(4.6rem, 13vh, 8.4rem);
+    --sticker-min: 11.5rem;
+    --sticker-vmin: 33;
+    --sticker-max: 24rem;
   }
 }
 
@@ -1655,7 +1668,7 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
   height: auto;
   overflow: clip;
   pointer-events: none;
-  z-index: 0;
+  z-index: 4;
   background: none;
 }
 
@@ -2014,7 +2027,7 @@ body[data-page="contact"].silly-mode .form-status {
     calc(7.4rem * var(--fox-scale, 1))
   );
   pointer-events: none;
-  z-index: -2;
+  z-index: 6;
   transform: translate3d(-200px, -200px, 0);
   will-change: transform;
 }
@@ -2057,6 +2070,7 @@ body[data-page="contact"].silly-mode .form-status {
   --sticker-vmin: 20;
   --sticker-max: 16rem;
   --sticker-scale: var(--sticker-scale-mover);
+  z-index: 6;
   animation-duration: 4.6s;
   transition:
     top 2.4s ease-in-out,
