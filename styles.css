@@ -825,8 +825,10 @@ body[data-page="flash"] .hero {
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
     top: clamp(8.2rem, 26vh, 14.8rem);
-    left: 0;
-    right: auto;
+    position: fixed !important;
+    left: -0.9rem !important;
+    right: auto !important;
+    z-index: 2147483645;
     --sticker-min: 11.5rem;
     --sticker-vmin: 33;
     --sticker-max: 24rem;
