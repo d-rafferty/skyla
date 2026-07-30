@@ -812,8 +812,8 @@ body[data-page="flash"] .hero {
 @media (max-width: 920px) {
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
     position: fixed !important;
-    left: -3.2rem !important;
-    right: auto !important;
+    right: clamp(0.2rem, 1vw, 0.9rem) !important;
+    left: auto !important;
     z-index: 2147483647 !important;
   }
 }
@@ -824,19 +824,19 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-star {
-    top: clamp(4.6rem, 13vh, 8.4rem);
-    left: auto;
-    right: clamp(0.2rem, 1vw, 0.9rem);
+    top: clamp(10rem, 30vh, 18rem);
+    left: clamp(0rem, 0.35vw, 0.35rem);
+    right: auto;
     --sticker-min: 6rem;
     --sticker-vmin: 16;
     --sticker-max: 14.2rem;
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
-    top: clamp(8.2rem, 26vh, 14.8rem);
+    top: clamp(0.2rem, 1.3vh, 0.9rem);
     position: fixed !important;
-    left: -3.2rem !important;
-    right: auto !important;
+    right: clamp(0.2rem, 1vw, 0.9rem) !important;
+    left: auto !important;
     z-index: 2147483647 !important;
     --sticker-min: 11.5rem;
     --sticker-vmin: 33;
