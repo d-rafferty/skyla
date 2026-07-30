@@ -2366,9 +2366,6 @@ body.silly-mode .site-nav a.active {
   color: #f7efff;
 }
 
-body.silly-mode .nav-toggle span:not(.sr-only) {
-  background: #fff;
-}
 
 body.silly-mode .site-nav .button,
 body.silly-mode .site-nav .button:hover,
