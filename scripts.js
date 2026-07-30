@@ -202,6 +202,22 @@ const form = document.querySelector("[data-contact-form]");
 const formStatus = document.querySelector(".form-status");
 
 if (form && formStatus) {
+  const messageField = form.querySelector("#message");
+
+  const autoGrowMessageField = () => {
+    if (!messageField) {
+      return;
+    }
+
+    messageField.style.height = "auto";
+    messageField.style.height = `${messageField.scrollHeight}px`;
+  };
+
+  if (messageField) {
+    autoGrowMessageField();
+    messageField.addEventListener("input", autoGrowMessageField);
+  }
+
   form.addEventListener("submit", (event) => {
     event.preventDefault();
 

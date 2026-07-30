@@ -1422,7 +1422,7 @@ body[data-page="contact"] .form-row select::placeholder {
 
 @media (max-width: 760px) {
   body[data-page="contact"] .form-row textarea {
-    min-height: 11rem;
+    min-height: 15rem;
     font-size: 1rem;
     line-height: 1.42;
   }
