@@ -306,9 +306,22 @@ main {
     grid-template-columns: 1fr;
   }
 
-  .flash-sheet-panel,
+  .flash-heading-block,
+  .flash-info-card,
+  .flash-sheet-panel {
+    grid-column: 1 / -1;
+  }
+
+  .flash-heading-block {
+    order: 1;
+  }
+
   .flash-info-card {
-    grid-column: auto;
+    order: 2;
+  }
+
+  .flash-sheet-panel {
+    order: 3;
   }
 }
 
