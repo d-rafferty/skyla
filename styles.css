@@ -242,6 +242,10 @@ main {
     --y: 58;
   }
 
+  body[data-page="home"]:not(.silly-mode) .light-drawing-clover-5 {
+    --y: 70;
+  }
+
   .light-drawing-stuff-1 {
     --x: 94;
     --y: 79;
