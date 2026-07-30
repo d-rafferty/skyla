@@ -15,7 +15,7 @@ const radioTuner = document.querySelector("[data-radio-tuner]");
 const frequencyReadout = document.querySelector("[data-frequency-readout]");
 const radioStatus = document.querySelector("[data-radio-status]");
 const sillyModeKey = "site-silly-mode";
-const hasDecoratedDarkMode = currentPage === "home" || currentPage === "flash";
+const hasDecoratedDarkMode = currentPage === "home" || currentPage === "gallery" || currentPage === "flash";
 const hasFoxRunnerPage = currentPage === "home" || currentPage === "gallery" || currentPage === "flash";
 let ufoCoordinatorReady = false;
 const deferredUfoCallbacks = [];
@@ -309,7 +309,8 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
   const foxEdgeExitPx = 26;
   const foxOffscreenPaddingPx = 48;
   const foxFrameIntervalMs = 1000 / 30;
-  const foxToUfoDelayMs = 1800;
+  const foxToUfoDelayMs = 900;
+  const ufoMovesBeforeFoxResume = 1;
   const siteHeader = document.querySelector(".site-header");
 
   let foxDirection = 1;
@@ -423,7 +424,7 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
 
     foxHandoffTimeoutId = window.setTimeout(() => {
       foxHandoffTimeoutId = 0;
-      runUfoMovesThen(3, () => {
+      runUfoMovesThen(ufoMovesBeforeFoxResume, () => {
         foxStartQueued = false;
         if (!shouldRunFox()) {
           return;
@@ -520,7 +521,7 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
     }
 
     foxStartQueued = true;
-    runUfoMovesThen(3, () => {
+    runUfoMovesThen(ufoMovesBeforeFoxResume, () => {
       foxStartQueued = false;
       if (!shouldRunFox()) {
         return;
