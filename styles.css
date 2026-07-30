@@ -810,16 +810,23 @@ body[data-page="flash"] .hero {
 }
 
 @media (max-width: 760px) {
-  body[data-page="flash"].silly-mode .sticker-star {
-    top: clamp(8.2rem, 26vh, 14.8rem);
-    left: clamp(0rem, 0.35vw, 0.35rem);
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker:not(.sticker-ufo) {
+    position: fixed;
+  }
+
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-star {
+    top: clamp(4.6rem, 13vh, 8.4rem);
+    left: auto;
+    right: clamp(0.2rem, 1vw, 0.9rem);
     --sticker-min: 6rem;
     --sticker-vmin: 16;
     --sticker-max: 14.2rem;
   }
 
-  body[data-page="flash"].silly-mode .sticker-heart {
-    top: clamp(4.6rem, 13vh, 8.4rem);
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
+    top: clamp(8.2rem, 26vh, 14.8rem);
+    left: clamp(0rem, 0.35vw, 0.35rem);
+    right: auto;
     --sticker-min: 11.5rem;
     --sticker-vmin: 33;
     --sticker-max: 24rem;
