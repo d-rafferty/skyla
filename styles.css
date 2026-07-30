@@ -1676,7 +1676,7 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
 }
 
 body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker:not(.sticker-ufo) {
-  position: absolute;
+  position: fixed;
   z-index: 1;
 }
 
