@@ -284,7 +284,9 @@ if (pausableAnimations.length) {
 }
 
 if (hasFoxRunnerPage && foxWalker && foxLane) {
-  const foxSpeedPxPerSecond = 390;
+  const foxMinSpeedPxPerSecond = 70;
+  const foxMaxSpeedPxPerSecond = 210;
+  const foxSpeedRatio = 0.17;
   const foxStartTopPx = 18;
   const foxBottomPaddingPx = 16;
   const foxEdgeExitPx = 26;
@@ -334,6 +336,14 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
 
   const getRightEdgeExit = () => foxLaneWidth + foxEdgeExitPx + foxOffscreenPaddingPx;
   const getLeftEdgeExit = () => -foxWidth - foxEdgeExitPx - foxOffscreenPaddingPx;
+
+  const getFoxSpeedPxPerSecond = () => {
+    ensureFoxMeasurements();
+    const laneForSpeed = Math.max(320, foxLaneWidth || window.innerWidth || 0);
+    const scaledSpeed = Math.round(laneForSpeed * foxSpeedRatio);
+
+    return Math.max(foxMinSpeedPxPerSecond, Math.min(foxMaxSpeedPxPerSecond, scaledSpeed));
+  };
 
   const getRandomFoxTop = () => {
     const maxFoxTop = getMaxFoxTop();
@@ -441,6 +451,7 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
     }
 
     const deltaSeconds = elapsedMs / 1000;
+    const foxSpeedPxPerSecond = getFoxSpeedPxPerSecond();
     foxLastTimestamp = timestamp;
     foxX += foxDirection * foxSpeedPxPerSecond * deltaSeconds;
 

@@ -1668,7 +1668,7 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
   height: auto;
   overflow: clip;
   pointer-events: none;
-  z-index: 4;
+  z-index: 2147483640;
   background: none;
 }
 
@@ -2013,7 +2013,7 @@ body[data-page="contact"].silly-mode .form-status {
 
 .fox-walker {
   display: none;
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   width: clamp(
@@ -2027,7 +2027,7 @@ body[data-page="contact"].silly-mode .form-status {
     calc(7.4rem * var(--fox-scale, 1))
   );
   pointer-events: none;
-  z-index: 6;
+  z-index: 2147483647;
   transform: translate3d(-200px, -200px, 0);
   will-change: transform;
 }
@@ -2070,7 +2070,7 @@ body[data-page="contact"].silly-mode .form-status {
   --sticker-vmin: 20;
   --sticker-max: 16rem;
   --sticker-scale: var(--sticker-scale-mover);
-  z-index: 6;
+  z-index: 2147483647;
   animation-duration: 4.6s;
   transition:
     top 2.4s ease-in-out,
