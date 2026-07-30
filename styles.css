@@ -812,6 +812,10 @@ body[data-page="flash"] .hero {
 @media (max-width: 760px) {
   body[data-page="flash"].silly-mode .sticker-star {
     top: clamp(8.2rem, 26vh, 14.8rem);
+    left: clamp(0rem, 0.35vw, 0.35rem);
+    --sticker-min: 6rem;
+    --sticker-vmin: 16;
+    --sticker-max: 14.2rem;
   }
 
   body[data-page="flash"].silly-mode .sticker-heart {

@@ -289,10 +289,12 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
   const foxSpeedRatio = 0.17;
   const foxStartTopPx = 18;
   const foxBottomPaddingPx = 16;
+  const foxViewportTopPaddingPx = 10;
   const foxEdgeExitPx = 26;
   const foxOffscreenPaddingPx = 48;
   const foxFrameIntervalMs = 1000 / 30;
   const foxToUfoDelayMs = 1800;
+  const siteHeader = document.querySelector(".site-header");
 
   let foxDirection = 1;
   let foxX = 0;
@@ -316,7 +318,13 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
     foxHeight = foxRect.height || foxHeight || 96;
   };
 
-  const getMaxFoxTop = () => Math.max(foxStartTopPx, foxLaneHeight - foxHeight - foxBottomPaddingPx);
+  const getVisibleFoxTopBounds = () => {
+    const headerBottom = siteHeader?.getBoundingClientRect().bottom || 0;
+    const minTop = Math.max(foxStartTopPx, Math.round(headerBottom + foxViewportTopPaddingPx));
+    const maxTop = Math.max(minTop, Math.round((window.innerHeight || 0) - foxHeight - foxBottomPaddingPx));
+
+    return { minTop, maxTop };
+  };
 
   const ensureFoxMeasurements = () => {
     if (foxLaneWidth > 1 && foxLaneHeight > 1 && foxWidth > 1 && foxHeight > 1) {
@@ -346,12 +354,12 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
   };
 
   const getRandomFoxTop = () => {
-    const maxFoxTop = getMaxFoxTop();
-    if (maxFoxTop <= foxStartTopPx) {
-      return foxStartTopPx;
+    const { minTop, maxTop } = getVisibleFoxTopBounds();
+    if (maxTop <= minTop) {
+      return minTop;
     }
 
-    return Math.round(foxStartTopPx + Math.random() * (maxFoxTop - foxStartTopPx));
+    return Math.round(minTop + Math.random() * (maxTop - minTop));
   };
 
   const setFoxFacing = () => {
@@ -370,7 +378,7 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
       foxDirection = Math.random() < 0.5 ? 1 : -1;
     }
 
-    foxY = useRandomStart ? getRandomFoxTop() : foxStartTopPx;
+    foxY = useRandomStart ? getRandomFoxTop() : getVisibleFoxTopBounds().minTop;
     foxX = foxDirection === 1 ? getLeftEdgeExit() : getRightEdgeExit();
     setFoxFacing();
     applyFoxState();
@@ -513,8 +521,9 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
     updateFoxMeasurements();
     const rightEdgeExit = getRightEdgeExit();
     const leftEdgeExit = getLeftEdgeExit();
+    const { minTop, maxTop } = getVisibleFoxTopBounds();
     foxX = Math.min(rightEdgeExit, Math.max(leftEdgeExit, foxX));
-    foxY = Math.max(foxStartTopPx, Math.min(getMaxFoxTop(), foxY));
+    foxY = Math.max(minTop, Math.min(maxTop, foxY));
     applyFoxState();
   });
 
