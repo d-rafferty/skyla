@@ -828,7 +828,7 @@ body[data-page="flash"] .hero {
     position: fixed !important;
     left: -0.9rem !important;
     right: auto !important;
-    z-index: 2147483645;
+    z-index: 2147483647 !important;
     --sticker-min: 11.5rem;
     --sticker-vmin: 33;
     --sticker-max: 24rem;
