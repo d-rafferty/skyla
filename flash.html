@@ -20,6 +20,45 @@
   >
   <link rel="stylesheet" href="styles.css">
 </head>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  console.log('Lightbox script loaded, found images:', document.querySelectorAll('img').length);
+  // Create the overlay once
+  var overlay = document.createElement('div');
+  overlay.className = 'lightbox-overlay';
+  overlay.innerHTML = '<span class="lightbox-close">&times;</span><img src="" alt="Enlarged image">';
+  document.body.appendChild(overlay);
+
+  var overlayImg = overlay.querySelector('img');
+
+  // Grab every image on the page and make it clickable
+  // (Change 'img' to a more specific selector like '.content img'
+  // if you only want certain images to be zoomable)
+  var images = document.querySelectorAll('img');
+
+  images.forEach(function (img) {
+    img.classList.add('lightbox-clickable');
+    img.addEventListener('click', function () {
+      overlayImg.src = img.src;
+      overlay.classList.add('active');
+    });
+  });
+
+  // Close on overlay click or X click
+  overlay.addEventListener('click', function () {
+    overlay.classList.remove('active');
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      overlay.classList.remove('active');
+    }
+  });
+});
+</script>
+
 <body data-page="flash">
   <button
     class="mode-toggle silly-corner-toggle"
@@ -103,25 +142,26 @@
         <div class="reveal flash-sheet-panel">
           <div class="feature-panel">
             <p class="panel-label">My Secrets..</p>
-            <div class="flash-grid">
-              <article class="flash-card">
-                <img class="flash-image" src="images/home-gallery-1.webp" alt="Flash sheet example 1" loading="lazy" decoding="async">
-              </article>
-              <article class="flash-card">
-                <img class="flash-image" src="images/home-gallery-2.webp" alt="Flash sheet example 2" loading="lazy" decoding="async">
-              </article>
-              <article class="flash-card">
-                <img class="flash-image" src="images/home-gallery-3.webp" alt="Flash sheet example 3" loading="lazy" decoding="async">
-              </article>
-              <article class="flash-card">
-                <img class="flash-image" src="images/home-gallery-4.webp" alt="Flash sheet example 4" loading="lazy" decoding="async">
-              </article>
-              <article class="flash-card">
-                <img class="flash-image" src="images/home-gallery-5.webp" alt="Flash sheet example 5" loading="lazy" decoding="async">
-              </article>
-              <article class="flash-card">
-                <!--<img class="flash-image" src="images/home-gallery-6.webp" alt="Flash sheet example 6" loading="lazy" decoding="async">-->
-              </article>
+            <div class="flash-grid">          
+                <article class="flash-card">
+                    <img class="flash-image" src="images/home-gallery-1.webp" alt="Flash sheet example 1" loading="lazy" decoding="async">
+                </article>
+                <article class="flash-card">
+                  <img class="flash-image" src="images/home-gallery-2.webp" alt="Flash sheet example 2" loading="lazy" decoding="async">
+                </article>
+                <article class="flash-card">
+                  <img class="flash-image" src="images/home-gallery-3.webp" alt="Flash sheet example 3" loading="lazy" decoding="async">
+                </article>
+                <article class="flash-card">
+                  <img class="flash-image" src="images/home-gallery-4.webp" alt="Flash sheet example 4" loading="lazy" decoding="async">
+                </article>
+                <article class="flash-card">
+                  <img class="flash-image" src="images/home-gallery-5.webp" alt="Flash sheet example 5" loading="lazy" decoding="async">
+                </article>
+                <article class="flash-card">
+                  <!--<img class="flash-image" src="images/home-gallery-6.webp" alt="Flash sheet example 6" loading="lazy" decoding="async">-->
+                </article>
+              
             </div>
           </div>
         </div>
