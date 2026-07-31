@@ -2523,8 +2523,10 @@ body.silly-mode .site-nav .button:focus-visible {
   cursor: zoom-in;
   transition: opacity 0.2s ease;
 }
-.lightbox-clickable:hover {
-  opacity: 0.9;
+@media (hover: hover) {
+  .lightbox-clickable:hover {
+    opacity: 0.9;
+  }
 }
 
 .lightbox-overlay {
