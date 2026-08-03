@@ -659,7 +659,8 @@ body[data-page="flash"] .hero {
   height: 10%;
   top: 1rem;
   left: 1rem;
-} 
+  display: none;
+}
 
 
 .bunny-scene {
@@ -904,16 +905,16 @@ body[data-page="flash"] .hero {
     left: auto;
     justify-content: center;
     width: 100%;
-    padding: 6.5rem 0 3rem;
+    padding: 3.5rem 0 1.5rem;
     gap: 1rem;
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight {
-    transform: translateY(2.5rem);
+    transform: translateY(1.25rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
-    transform: translateY(-6rem);
+    transform: translateY(-3rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
@@ -921,17 +922,17 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight-image {
-    width: clamp(5.2rem, 32vw, 8.8rem);
+    width: clamp(2.6rem, 16vw, 4.4rem);
     transform: rotate(0deg) translate(6%, 4%);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-image {
-    width: clamp(6.4rem, 38vw, 10.8rem);
+    width: clamp(3.2rem, 19vw, 5.4rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-shadow-image {
     left: 32%;
-    width: 290%;
+    width: 145%;
     transform: translateY(-75%);
   }
 
@@ -948,7 +949,7 @@ body[data-page="flash"] .hero {
     --sticker-max: 14.2rem;
   }
 
-  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
+  body:is([data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
     top: 14rem;
     left: 1rem;
     right: auto;
@@ -1887,6 +1888,10 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
   z-index: 1;
 }
 
+body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
+  display: inline-flex;
+}
+
 body:is([data-page="home"], [data-page="flash"]).silly-mode .sticker-ufo {
   top: 0;
   right: auto;
@@ -2742,5 +2747,27 @@ body.silly-mode .site-nav .button:focus-visible {
   font-weight: 300;
   cursor: pointer;
   line-height: 1;
+}
+
+.sticky-note-mobile {
+  display: none;
+}
+
+.sticky-note-mobile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-width: 760px) {
+  body[data-page="home"].silly-mode .sticky-note-mobile {
+    display: block;
+    width: 9rem;
+    height: 9rem;
+    margin: 1rem 0 0 1rem;
+  }
 }
 
