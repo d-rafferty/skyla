@@ -896,6 +896,8 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-scene {
+    display: flex;
+    align-items: flex-end;
     position: static;
     bottom: auto;
     left: auto;
@@ -1848,7 +1850,7 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
     bottom: 2.5rem;
     left: 1.5rem;
     top: auto;
-    z-index: 3;
+    z-index: 1;
     pointer-events: auto;
   }
 
@@ -1858,6 +1860,19 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
     transform: translateY(-5rem);
+  }
+
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
+    pointer-events: none;
+  }
+
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main a,
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main button,
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main input,
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main select,
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main textarea,
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main label {
+    pointer-events: auto;
   }
 }
 
