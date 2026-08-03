@@ -36,6 +36,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
@@ -948,7 +949,7 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
-    top: 5.5rem;
+    top: 14rem;
     left: 1rem;
     right: auto;
     --sticker-min: 6rem;
@@ -957,7 +958,7 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
-    top: 5.5rem;
+    top: 14rem;
     position: fixed !important;
     right: clamp(0.2rem, 1vw, 0.9rem) !important;
     left: auto !important;
@@ -1908,7 +1909,6 @@ body:is([data-page="home"], [data-page="flash"]).silly-mode .owl-stack {
 body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
   position: relative;
   z-index: 1;
-  overflow: visible;
   padding-bottom: 9rem;
 }
 
