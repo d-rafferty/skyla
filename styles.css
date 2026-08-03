@@ -939,7 +939,7 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-star {
-    top: clamp(10rem, 30vh, 18rem);
+    top: clamp(18rem, 42vh, 26rem);
     left: clamp(0rem, 0.35vw, 0.35rem);
     right: auto;
     --sticker-min: 6rem;
@@ -948,7 +948,7 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
-    top: 1rem;
+    top: 5.5rem;
     left: 1rem;
     right: auto;
     --sticker-min: 6rem;
@@ -957,7 +957,7 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticker-heart {
-    top: clamp(0.2rem, 1.3vh, 0.9rem);
+    top: 5.5rem;
     position: fixed !important;
     right: clamp(0.2rem, 1vw, 0.9rem) !important;
     left: auto !important;
