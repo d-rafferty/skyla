@@ -903,16 +903,16 @@ body[data-page="flash"] .hero {
     left: auto;
     justify-content: center;
     width: 100%;
-    padding: 2rem 0 1.5rem;
+    padding: 3.5rem 0 1.5rem;
     gap: 1rem;
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight {
-    transform: none;
+    transform: translateY(1.25rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
-    transform: none;
+    transform: translateY(-3rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
