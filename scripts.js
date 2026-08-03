@@ -11,6 +11,7 @@ const darkHeroHeadingImage = document.querySelector("[data-dark-hero-heading]");
 const scrollGalleryTrack = document.querySelector("[data-scroll-gallery]");
 const owlDragger = document.querySelector("[data-owl-dragger]");
 const keyUnlockButton = document.querySelector("[data-key-unlock]");
+const bunnyScenes = document.querySelectorAll("[data-bunny-scene]");
 const radioTuner = document.querySelector("[data-radio-tuner]");
 const frequencyReadout = document.querySelector("[data-frequency-readout]");
 const radioStatus = document.querySelector("[data-radio-status]");
@@ -577,7 +578,58 @@ if (hasFoxRunnerPage && foxWalker && foxLane) {
   });
 }
 
+const resetBunnyScenes = () => {
+  bunnyScenes.forEach((scene) => {
+    scene.classList.remove("is-lit");
+
+    const flashlightButton = scene.querySelector("[data-bunny-flashlight]");
+    const flashlightImage = scene.querySelector(".bunny-flashlight-image");
+
+    if (flashlightImage?.dataset.flashlightOff) {
+      flashlightImage.src = flashlightImage.dataset.flashlightOff;
+    }
+
+    if (flashlightButton) {
+      flashlightButton.setAttribute("aria-pressed", "false");
+      flashlightButton.setAttribute("aria-label", "Turn flashlight on");
+    }
+  });
+};
+
+const scaryAudio = new Audio("sounds/scary.mp3");
+scaryAudio.preload = "auto";
+scaryAudio.volume = 0.2;
+
+const initBunnyScenes = () => {
+  bunnyScenes.forEach((scene) => {
+    const flashlightButton = scene.querySelector("[data-bunny-flashlight]");
+    const flashlightImage = scene.querySelector(".bunny-flashlight-image");
+
+    if (!flashlightButton || !flashlightImage) {
+      return;
+    }
+
+    flashlightButton.addEventListener("click", () => {
+      const isLit = scene.classList.toggle("is-lit");
+      flashlightImage.src = isLit
+        ? flashlightImage.dataset.flashlightOn
+        : flashlightImage.dataset.flashlightOff;
+      flashlightButton.setAttribute("aria-pressed", String(isLit));
+      flashlightButton.setAttribute(
+        "aria-label",
+        isLit ? "Turn flashlight off" : "Turn flashlight on"
+      );
+      if (isLit) {
+        scaryAudio.currentTime = 0;
+        void scaryAudio.play().catch(() => {});
+      }
+    });
+  });
+};
+
 if (hasDecoratedDarkMode) {
+  initBunnyScenes();
+
   const unlockSequence = "cvhwpmbgvm";
   const ufoMaxRotate = 18;
   const ufoMinScale = 0.95;
@@ -697,6 +749,7 @@ if (hasDecoratedDarkMode) {
       startUfoWander();
     } else {
       stopUfoWander();
+      resetBunnyScenes();
     }
   };
 
