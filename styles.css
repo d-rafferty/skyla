@@ -2763,11 +2763,15 @@ body.silly-mode .site-nav .button:focus-visible {
 }
 
 @media (max-width: 760px) {
-  body[data-page="home"].silly-mode .sticky-note-mobile {
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note-mobile {
     display: block;
     width: 9rem;
     height: 9rem;
     margin: 1rem 0 0 1rem;
+  }
+
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .silly-skyline .sticky-note {
+    display: none !important;
   }
 }
 
