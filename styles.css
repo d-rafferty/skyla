@@ -1839,24 +1839,26 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
   --bunny-scene-clearance: clamp(5.5rem, 16vh, 8rem);
 }
 
-body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-scene {
-  display: flex;
-  align-items: flex-end;
-  gap: clamp(0.05rem, 0.6vw, 0.35rem);
-  position: fixed;
-  bottom: 2.5rem;
-  left: 1.5rem;
-  top: auto;
-  z-index: 3;
-  pointer-events: auto;
-}
+@media (min-width: 761px) {
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-scene {
+    display: flex;
+    align-items: flex-end;
+    gap: clamp(0.05rem, 0.6vw, 0.35rem);
+    position: fixed;
+    bottom: 2.5rem;
+    left: 1.5rem;
+    top: auto;
+    z-index: 3;
+    pointer-events: auto;
+  }
 
-body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight {
-  transform: translateY(2rem);
-}
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight {
+    transform: translateY(2rem);
+  }
 
-body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
-  transform: translateY(-5rem);
+  body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
+    transform: translateY(-5rem);
+  }
 }
 
 body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-scene.is-lit .bunny-shadow-image {
