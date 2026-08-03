@@ -903,16 +903,16 @@ body[data-page="flash"] .hero {
     left: auto;
     justify-content: center;
     width: 100%;
-    padding: 3.5rem 0 1.5rem;
+    padding: 6.5rem 0 3rem;
     gap: 1rem;
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight {
-    transform: translateY(1.25rem);
+    transform: translateY(2.5rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-figure {
-    transform: translateY(-3rem);
+    transform: translateY(-6rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
@@ -920,17 +920,17 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-flashlight-image {
-    width: clamp(2.6rem, 16vw, 4.4rem);
+    width: clamp(5.2rem, 32vw, 8.8rem);
     transform: rotate(0deg) translate(6%, 4%);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-image {
-    width: clamp(3.2rem, 19vw, 5.4rem);
+    width: clamp(6.4rem, 38vw, 10.8rem);
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .bunny-shadow-image {
     left: 32%;
-    width: 145%;
+    width: 290%;
     transform: translateY(-75%);
   }
 
@@ -948,8 +948,8 @@ body[data-page="flash"] .hero {
   }
 
   body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode .sticky-note {
-    top: clamp(50rem, 30vh, 18rem);
-    left: clamp(50rem, 0.35vw, 0.35rem);
+    top: 1rem;
+    left: 1rem;
     right: auto;
     --sticker-min: 6rem;
     --sticker-vmin: 16;
@@ -1850,7 +1850,7 @@ body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mo
     bottom: 2.5rem;
     left: 1.5rem;
     top: auto;
-    z-index: 1;
+    z-index: 0;
     pointer-events: auto;
   }
 
@@ -1907,6 +1907,7 @@ body:is([data-page="home"], [data-page="flash"]).silly-mode .owl-stack {
 
 body:is([data-page="home"], [data-page="gallery"], [data-page="flash"]).silly-mode main {
   position: relative;
+  z-index: 1;
   overflow: visible;
   padding-bottom: 9rem;
 }
