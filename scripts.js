@@ -219,7 +219,7 @@ if (form && formStatus) {
     messageField.addEventListener("input", autoGrowMessageField);
   }
 
-  form.addEventListener("submit", (event) => {
+  /*form.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const name = form.querySelector("#name")?.value.trim() || "";
@@ -245,7 +245,7 @@ if (form && formStatus) {
 
     formStatus.textContent = "Opening your email app with a pre-filled booking request...";
     window.location.href = mailtoUrl;
-  });
+  });*/
 }
 
 const revealItems = document.querySelectorAll(".reveal");
